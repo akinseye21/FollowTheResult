@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/defaultWhite"
+    tools:context=".Dashboard">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
+        android:id="@+id/one"
+        android:gravity="center"
+        android:background="@drawable/blue_up"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/pageTitle"
+            android:text="HOME"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:fontFamily="@font/montserratblack"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="50dp"
+        android:layout_height="150dp"
+        android:background="@color/defaultDark"/>
+    <LinearLayout
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/white_corner1"
+        android:layout_below="@+id/one"/>
+
+
+    <LinearLayout
+        android:layout_width="50dp"
+        android:layout_height="150dp"
+        android:background="@color/defaultDark"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:id="@+id/two"
+        android:background="@drawable/blue_bottom">
+
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_height="50dp"
+            android:background="@null"
+            android:layout_gravity="bottom"
+            app:tabIndicatorColor="@color/defaultDark"
+            app:tabIndicatorHeight="0.3dp"
+            app:tabMode="fixed"
+            app:tabGravity="fill"
+            android:layout_alignParentBottom="true"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/white_corner2"
+        android:layout_alignParentRight="true"
+        android:layout_above="@+id/two"/>
+
+
+
+
+    <androidx.viewpager.widget.ViewPager
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/viewpager"
+        android:layout_marginBottom="0dp"
+        android:layout_above="@+id/two"
+        android:layout_below="@+id/one"/>
+
+</RelativeLayout>

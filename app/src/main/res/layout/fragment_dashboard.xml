@@ -1,0 +1,531 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@null"
+    android:id="@+id/fragmentDashboard"
+    tools:context=".FragmentDashboard">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/two"
+        android:layout_below="@+id/one"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/montserratmedium"
+                            android:text="Welcome"
+                            android:textColor="@color/defaultDark"
+                            android:textSize="15dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/fullname"
+                            android:fontFamily="@font/montserratextrabold"
+                            android:text="Godbless Umar"
+                            android:textColor="@color/defaultDark"
+                            android:textSize="15dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:gravity="right"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/location"
+                            android:fontFamily="@font/montserratmedium"
+                            android:gravity="center"
+                            android:text="Location:"
+                            android:textColor="@color/defaultDark"
+                            android:textSize="12dp" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/montserratmedium"
+                                android:gravity="center"
+                                android:text="LGA: "
+                                android:textColor="@color/defaultDark"
+                                android:textSize="12dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/montserratblack"
+                                android:gravity="center"
+                                android:id="@+id/lga"
+                                android:text="Ohafia"
+                                android:textColor="@color/defaultDark"
+                                android:textSize="12dp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/montserratmedium"
+                                android:gravity="center"
+                                android:text="State: "
+                                android:textColor="@color/defaultDark"
+                                android:textSize="12dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/montserratblack"
+                                android:gravity="center"
+                                android:id="@+id/state"
+                                android:text="Abia"
+                                android:textColor="@color/defaultDark"
+                                android:textSize="12dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </RelativeLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="30dp"
+                        android:fontFamily="@font/montserratbold"
+                        android:text="Arrival"
+                        android:textColor="@color/defaultDark"
+                        android:textSize="15dp" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:layout_width="20dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:layout_marginTop="20dp"
+                            android:orientation="vertical">
+                            <ImageView
+                                android:layout_width="10dp"
+                                android:layout_height="10dp"
+                                android:layout_centerVertical="true"
+                                android:src="@drawable/dark_circle" />
+                            <View
+                                android:layout_width="0.1dp"
+                                android:layout_height="60dp"
+                                android:background="@color/defaultDark"/>
+
+                        </LinearLayout>
+
+<!--                        <ImageView-->
+<!--                            android:layout_width="10dp"-->
+<!--                            android:layout_height="10dp"-->
+<!--                            android:layout_centerVertical="true"-->
+<!--                            android:layout_marginRight="10dp"-->
+<!--                            android:src="@drawable/dark_circle" />-->
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            android:layout_marginLeft="20dp"
+                            android:background="@drawable/normal_dark_corner"
+                            android:padding="10dp">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_centerVertical="true"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/montserratbold"
+                                    android:text="0%"
+                                    android:textColor="@color/white"
+                                    android:textSize="20dp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/montserratregular"
+                                    android:text="Completed Questions"
+                                    android:textColor="@color/white"
+                                    android:textSize="10dp" />
+                            </LinearLayout>
+
+
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_height="match_parent"
+                                android:layout_centerInParent="true"
+                                android:background="@color/white" />
+
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/montserratbold"
+                                    android:text="100%"
+                                    android:textColor="@color/white"
+                                    android:textSize="20dp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/montserratregular"
+                                    android:text="Missing Questions"
+                                    android:textColor="@color/white"
+                                    android:textSize="10dp" />
+                            </LinearLayout>
+
+                        </RelativeLayout>
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="20dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:orientation="vertical">
+                            <View
+                                android:layout_width="0.1dp"
+                                android:layout_height="45dp"
+                                android:background="@color/defaultDark"/>
+
+                            <ImageView
+                                android:layout_width="10dp"
+                                android:layout_height="10dp"
+                                android:layout_centerVertical="true"
+                                android:src="@drawable/dark_circle" />
+
+                            <View
+                                android:layout_width="0.1dp"
+                                android:layout_height="45dp"
+                                android:background="@color/defaultDark"/>
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/montserratbold"
+                                android:text="Process"
+                                android:textColor="@color/defaultDark"
+                                android:textSize="15dp" />
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+
+
+
+                                <!--                        <ImageView-->
+                                <!--                            android:layout_width="10dp"-->
+                                <!--                            android:layout_height="10dp"-->
+                                <!--                            android:layout_centerVertical="true"-->
+                                <!--                            android:layout_marginRight="10dp"-->
+                                <!--                            android:src="@drawable/dark_circle" />-->
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="60dp"
+                                    android:background="@drawable/normal_white_corner"
+                                    android:padding="10dp">
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentLeft="true"
+                                        android:layout_centerVertical="true"
+                                        android:orientation="vertical">
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/montserratbold"
+                                            android:text="0%"
+                                            android:textColor="@color/defaultDark"
+                                            android:textSize="20dp" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/montserratregular"
+                                            android:text="Completed Questions"
+                                            android:textColor="@color/defaultDark"
+                                            android:textSize="10dp" />
+                                    </LinearLayout>
+
+
+                                    <View
+                                        android:layout_width="1dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_centerInParent="true"
+                                        android:background="@color/defaultDark" />
+
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_centerVertical="true"
+                                        android:orientation="vertical">
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/montserratbold"
+                                            android:text="100%"
+                                            android:textColor="@color/defaultDark"
+                                            android:textSize="20dp" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/montserratregular"
+                                            android:text="Missing Questions"
+                                            android:textColor="@color/defaultDark"
+                                            android:textSize="10dp" />
+                                    </LinearLayout>
+
+                                </RelativeLayout>
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="20dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginBottom="20dp"
+                            android:gravity="center"
+                            android:orientation="vertical">
+                            <View
+                                android:layout_width="0.1dp"
+                                android:layout_height="60dp"
+                                android:background="@color/defaultDark"/>
+                            <ImageView
+                                android:layout_width="10dp"
+                                android:layout_height="10dp"
+                                android:layout_centerVertical="true"
+                                android:src="@drawable/dark_circle" />
+
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/montserratbold"
+                                android:layout_marginTop="10dp"
+                                android:text="Results"
+                                android:textColor="@color/defaultDark"
+                                android:textSize="15dp" />
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <!--                            <ImageView-->
+                                <!--                                android:layout_width="10dp"-->
+                                <!--                                android:layout_height="10dp"-->
+                                <!--                                android:layout_centerVertical="true"-->
+                                <!--                                android:layout_marginRight="10dp"-->
+                                <!--                                android:src="@drawable/dark_circle" />-->
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="60dp"
+                                    android:background="@drawable/normal_dark_corner"
+                                    android:padding="10dp">
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentLeft="true"
+                                        android:layout_centerVertical="true"
+                                        android:orientation="vertical">
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/montserratbold"
+                                            android:text="0%"
+                                            android:textColor="@color/white"
+                                            android:textSize="20dp" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/montserratregular"
+                                            android:text="Completed Questions"
+                                            android:textColor="@color/white"
+                                            android:textSize="10dp" />
+                                    </LinearLayout>
+
+
+                                    <View
+                                        android:layout_width="1dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_centerInParent="true"
+                                        android:background="@color/white" />
+
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_centerVertical="true"
+                                        android:orientation="vertical">
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/montserratbold"
+                                            android:text="100%"
+                                            android:textColor="@color/white"
+                                            android:textSize="20dp" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/montserratregular"
+                                            android:text="Missing Questions"
+                                            android:textColor="@color/white"
+                                            android:textSize="10dp" />
+                                    </LinearLayout>
+
+                                </RelativeLayout>
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+
+
+
+                </LinearLayout>
+
+
+
+
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn"
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
+                    android:layout_below="@+id/two"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="40dp"
+                    android:background="@drawable/rounded_red"
+                    android:fontFamily="@font/montserratmedium"
+                    android:text="Submit Checklist"
+                    android:textAllCaps="false"
+                    android:textColor="@color/defaultWhite" />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</FrameLayout>

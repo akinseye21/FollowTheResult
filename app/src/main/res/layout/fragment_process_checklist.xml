@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fragmentProcessChecklist"
+    tools:context=".FragmentProcessChecklist">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:layout_above="@+id/two"
+        android:layout_below="@+id/one"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="30dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/montserratmedium"
+                            android:text="Welcome"
+                            android:textColor="@color/defaultDark"
+                            android:textSize="15dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/fullname"
+                            android:fontFamily="@font/montserratextrabold"
+                            android:text="Godbless Umar"
+                            android:textColor="@color/defaultDark"
+                            android:textSize="15dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:gravity="right"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/location"
+                            android:fontFamily="@font/montserratmedium"
+                            android:gravity="center"
+                            android:text="Location:"
+                            android:textColor="@color/defaultDark"
+                            android:textSize="12dp" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/montserratmedium"
+                                android:gravity="center"
+                                android:text="LGA: "
+                                android:textColor="@color/defaultDark"
+                                android:textSize="12dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/montserratblack"
+                                android:gravity="center"
+                                android:id="@+id/lga"
+                                android:text="Ohafia"
+                                android:textColor="@color/defaultDark"
+                                android:textSize="12dp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/montserratmedium"
+                                android:gravity="center"
+                                android:text="State: "
+                                android:textColor="@color/defaultDark"
+                                android:textSize="12dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/montserratblack"
+                                android:gravity="center"
+                                android:id="@+id/state"
+                                android:text="Abia"
+                                android:textColor="@color/defaultDark"
+                                android:textSize="12dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:id="@+id/card"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:background="@drawable/normal_white_corner"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="20dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/presentquestion"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="20dp"
+                                android:fontFamily="@font/montserratbold"
+                                android:text="0"
+                                android:textColor="@color/defaultDark"
+                                android:textSize="15dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="20dp"
+                                android:fontFamily="@font/montserratbold"
+                                android:text=" out of "
+                                android:textColor="@color/defaultDark"
+                                android:textSize="15dp" />
+
+                            <TextView
+                                android:id="@+id/numofquestions"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="20dp"
+                                android:fontFamily="@font/montserratbold"
+                                android:text="0"
+                                android:textColor="@color/defaultDark"
+                                android:textSize="15dp" />
+
+                        </LinearLayout>
+
+
+                        <TextView
+                            android:id="@+id/question"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:fontFamily="@font/montserratmedium"
+                            android:gravity="center"
+                            android:text=""
+                            android:textColor="@color/defaultDark"
+                            android:textSize="15dp" />
+
+                        <RadioGroup
+                            android:id="@+id/radiogroupYesNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:visibility="visible">
+
+                            <RadioButton
+                                android:id="@+id/radioYes"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:buttonTint="@color/defaultDark"
+                                android:fontFamily="@font/montserratbold"
+                                android:text="Yes"
+                                android:textColor="@color/defaultDark" />
+
+                            <RadioButton
+                                android:id="@+id/radioNo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:buttonTint="@color/defaultDark"
+                                android:fontFamily="@font/montserratbold"
+                                android:text="No"
+                                android:textColor="@color/defaultDark" />
+                        </RadioGroup>
+
+                    </LinearLayout>
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="50dp"
+                            android:background="@drawable/normal_dark_corner"
+                            android:fontFamily="@font/montserratbold"
+                            android:paddingLeft="20dp"
+                            android:paddingTop="10dp"
+                            android:paddingRight="20dp"
+                            android:paddingBottom="10dp"
+                            android:text="Process Checklist"
+                            android:textColor="@color/defaultWhite" />
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/normal_dark_corner">
+
+                            <ImageView
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:padding="10dp"
+                                android:src="@drawable/ic14"
+                                app:tint="@color/defaultWhite" />
+                        </RelativeLayout>
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_below="@+id/card"
+                        android:layout_marginTop="10dp">
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/previous"
+                            android:layout_width="150dp"
+                            android:layout_height="40dp"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_gravity="center"
+                            android:background="@drawable/normal_dark_corner"
+                            android:fontFamily="@font/montserratmedium"
+                            android:text="Previous"
+                            android:textAllCaps="false"
+                            android:textColor="@color/defaultWhite"
+                            android:visibility="visible" />
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/next"
+                            android:layout_width="150dp"
+                            android:layout_height="40dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_gravity="center"
+                            android:background="@drawable/normal_red_corner"
+                            android:fontFamily="@font/montserratmedium"
+                            android:text="Next"
+                            android:textAllCaps="false"
+                            android:textColor="@color/defaultWhite" />
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</FrameLayout>

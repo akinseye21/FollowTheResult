@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/defaultDark"
+    tools:context=".Registration">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
+        android:id="@+id/one"
+        android:gravity="center"
+        android:background="@drawable/white_up"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/pageTitle"
+            android:text="REGISTRATION"
+            android:textColor="@color/defaultDark"
+            android:textSize="20dp"
+            android:fontFamily="@font/montserratblack"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="50dp"
+        android:layout_height="150dp"
+        android:background="@color/white"/>
+    <LinearLayout
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/dark_corner1"
+        android:layout_below="@+id/one"/>
+
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/one"
+        android:layout_above="@+id/two">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="70dp"
+                    android:src="@drawable/ic19" />
+
+                <EditText
+                    android:id="@+id/edtfullname"
+                    android:layout_width="300dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/edt_login"
+                    android:fontFamily="@font/montserratregular"
+                    android:hint="Fullname"
+                    android:inputType="textCapWords"
+                    android:paddingLeft="30dp"
+                    android:paddingRight="20dp"
+                    android:singleLine="true"
+                    android:textColor="#ffffff"
+                    android:textColorHint="#ffffff"
+                    android:textSize="15dp" />
+
+                <EditText
+                    android:id="@+id/edtemail"
+                    android:layout_width="300dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/edt_login"
+                    android:fontFamily="@font/montserratregular"
+                    android:hint="Email address"
+                    android:inputType="textEmailAddress"
+                    android:paddingLeft="30dp"
+                    android:paddingRight="20dp"
+                    android:singleLine="true"
+                    android:textColor="#ffffff"
+                    android:textColorHint="#ffffff"
+                    android:textSize="15dp" />
+
+                <EditText
+                    android:id="@+id/edtphone"
+                    android:layout_width="300dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/edt_login"
+                    android:fontFamily="@font/montserratregular"
+                    android:hint="Phone number"
+                    android:inputType="number"
+                    android:paddingLeft="30dp"
+                    android:paddingRight="20dp"
+                    android:singleLine="true"
+                    android:textColor="#ffffff"
+                    android:textColorHint="#ffffff"
+                    android:textSize="15dp" />
+
+
+                <EditText
+                    android:id="@+id/edtpassword"
+                    android:layout_width="300dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/edt_login"
+                    android:fontFamily="@font/montserratregular"
+                    android:hint="* * * * *"
+                    android:inputType="textPassword"
+                    android:paddingLeft="30dp"
+                    android:paddingRight="20dp"
+                    android:singleLine="true"
+                    android:textColor="#ffffff"
+                    android:textColorHint="#ffffff"
+                    android:textSize="15dp" />
+
+                <Spinner
+                    android:layout_width="300dp"
+                    android:layout_height="50dp"
+                    android:id="@+id/spinnerstate"
+                    android:layout_marginTop="30dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:background="@drawable/edt_login"
+                    android:spinnerMode="dropdown"/>
+
+
+                <RelativeLayout
+                    android:layout_width="300dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="30dp">
+                    <Spinner
+                        android:layout_width="300dp"
+                        android:layout_height="50dp"
+                        android:id="@+id/spinnerlga"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:background="@drawable/edt_login"
+                        android:spinnerMode="dropdown"/>
+
+                    <ProgressBar
+                        android:id="@+id/progressBarLGA"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:visibility="gone"
+                        android:layout_centerInParent="true" />
+                </RelativeLayout>
+
+
+
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/signup"
+                    android:layout_width="150dp"
+                    android:layout_height="40dp"
+                    android:layout_below="@+id/two"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="30dp"
+                    android:background="@drawable/rounded_red"
+                    android:fontFamily="@font/montserratmedium"
+                    android:text="Signup"
+                    android:textAllCaps="false"
+                    android:textColor="@color/defaultWhite" />
+
+
+            </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+        </LinearLayout>
+    </ScrollView>
+
+
+
+
+
+
+    <LinearLayout
+        android:layout_width="50dp"
+        android:layout_height="150dp"
+        android:background="@color/white"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:id="@+id/two"
+        android:background="@drawable/white_bottom">
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/dark_corner2"
+        android:layout_alignParentRight="true"
+        android:layout_above="@+id/two"/>
+
+
+</RelativeLayout>

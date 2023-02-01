@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/defaultWhite"
+    tools:context=".EnterCode">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
+        android:id="@+id/one"
+        android:gravity="center"
+        android:background="@drawable/blue_up"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/pageTitle"
+            android:text="CODE VERIFICATION"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:fontFamily="@font/montserratblack"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="50dp"
+        android:layout_height="150dp"
+        android:background="@color/defaultDark"/>
+    <LinearLayout
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/white_corner1"
+        android:layout_below="@+id/one"/>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="A four digit pin has been sent to your email"
+            android:textColor="@color/defaultDark"
+            android:fontFamily="@font/montserratmedium"
+            android:textStyle="normal"
+            android:textSize="12dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <EditText
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:singleLine="true"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textColorHint="@color/defaultDark"
+                android:textColor="@color/defaultDark"
+                android:fontFamily="@font/montserratbold"
+                android:hint="*"
+                android:gravity="center"
+                android:id="@+id/edt1"
+                android:layout_margin="10dp"
+                android:background="@drawable/normal_white_corner"/>
+            <EditText
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:singleLine="true"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textColorHint="@color/defaultDark"
+                android:textColor="@color/defaultDark"
+                android:fontFamily="@font/montserratbold"
+                android:hint="*"
+                android:gravity="center"
+                android:id="@+id/edt2"
+                android:layout_margin="10dp"
+                android:background="@drawable/normal_white_corner"/>
+            <EditText
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:singleLine="true"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textColorHint="@color/defaultDark"
+                android:textColor="@color/defaultDark"
+                android:fontFamily="@font/montserratbold"
+                android:hint="*"
+                android:gravity="center"
+                android:id="@+id/edt3"
+                android:layout_margin="10dp"
+                android:background="@drawable/normal_white_corner"/>
+            <EditText
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:singleLine="true"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textColorHint="@color/defaultDark"
+                android:textColor="@color/defaultDark"
+                android:fontFamily="@font/montserratbold"
+                android:hint="*"
+                android:gravity="center"
+                android:id="@+id/edt4"
+                android:layout_margin="10dp"
+                android:background="@drawable/normal_white_corner"/>
+
+        </LinearLayout>
+
+        <Button
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:text="Verify"
+            android:fontFamily="@font/montserratmedium"
+            android:textStyle="bold"
+            android:textColor="#ffffff"
+            android:background="@drawable/rounded_red"
+            android:textAllCaps="false"
+            android:id="@+id/verify"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:id="@+id/resend_code"
+            android:fontFamily="@font/montserratmedium"
+            android:text="Re-send code"
+            android:textColor="#ff6678"
+            android:textStyle="bold"
+            android:textSize="17dp"
+            android:layout_marginTop="20dp"/>
+
+        <View
+            android:layout_width="100dp"
+            android:layout_height="1dp"
+            android:layout_gravity="center"
+            android:background="#ff6678"/>
+
+    </LinearLayout>
+
+
+
+
+
+    <LinearLayout
+        android:layout_width="50dp"
+        android:layout_height="150dp"
+        android:background="@color/defaultDark"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:id="@+id/two"
+        android:background="@drawable/blue_bottom">
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/white_corner2"
+        android:layout_alignParentRight="true"
+        android:layout_above="@+id/two"/>
+
+
+
+</RelativeLayout>
