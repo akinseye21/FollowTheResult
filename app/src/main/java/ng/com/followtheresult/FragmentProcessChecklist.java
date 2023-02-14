@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -40,11 +41,12 @@ import java.util.Map;
 public class FragmentProcessChecklist extends Fragment {
 
     TextView fullname, state, lga;
-    SharedPreferences preferences;
+
 
     Dialog myDialog, myDialog2;
     AppCompatButton next;
     public static final String GET_QUESTIONS = "https://readytoleadafrica.org/rtl_mobile/get_questions";
+    public static final String SUBMIT_PROCESS = "https://readytoleadafrica.org/rtl_mobile/process_checks";
 
     ArrayList<String> arr_id;
     ArrayList<String> arr_question_process;
@@ -64,6 +66,15 @@ public class FragmentProcessChecklist extends Fragment {
 
     String[] responses;
 
+    SharedPreferences preferences, preferences2;
+    String got_fullname;
+    String got_state;
+    String got_lga;
+    String got_email;
+    LinearLayout lin_lga, lin_lgacount;
+    TextView lgaCount;
+
+
     public FragmentProcessChecklist() {
         // Required empty public constructor
     }
@@ -77,17 +88,32 @@ public class FragmentProcessChecklist extends Fragment {
         View v = inflater.inflate(R.layout.fragment_process_checklist, container, false);
 
         preferences = getActivity().getSharedPreferences("LoginDetails", Context.MODE_PRIVATE);
-        final String got_fullname = preferences.getString("fullname", "not available");
-        final String got_state = preferences.getString("state", "not available");
-        final String got_lga = preferences.getString("lga", "not available");
+        got_fullname = preferences.getString("fullname", "not available");
+        got_state = preferences.getString("state", "not available");
+        got_lga = preferences.getString("lga", "not available");
+        got_email = preferences.getString("email", "not available");
+        final String usertype = preferences.getString("usertype", "");
+
+        preferences2 = getActivity().getSharedPreferences("lga_count", Context.MODE_PRIVATE);
+        final String lga_count = preferences2.getString("lgacount", "1");
 
         fullname = v.findViewById(R.id.fullname);
         state = v.findViewById(R.id.state);
         lga = v.findViewById(R.id.lga);
+        lin_lga = v.findViewById(R.id.lin_lga);
+        lin_lgacount = v.findViewById(R.id.lin_lgacount);
+        lgaCount = v.findViewById(R.id.lga_count);
 
         fullname.setText(got_fullname);
         state.setText(got_state);
         lga.setText(got_lga);
+        lgaCount.setText(lga_count);
+
+        if(usertype.equals("admin")){
+            lin_lga.setVisibility(View.GONE);
+        }else{
+            lin_lgacount.setVisibility(View.GONE);
+        }
 
 //get the views
         presentQuestion = v.findViewById(R.id.presentquestion);
@@ -296,12 +322,88 @@ public class FragmentProcessChecklist extends Fragment {
         submission.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //show Dialog that is loading the information
+                myDialog = new Dialog(getContext());
+                myDialog.setContentView(R.layout.custom_popup_loading);
+                TextView text = myDialog.findViewById(R.id.text);
+                text.setText("Submitting Response... Please wait");
+                myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                myDialog.setCanceledOnTouchOutside(false);
+                myDialog.show();
+
                 //send the results to the DB
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, SUBMIT_PROCESS,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                try{
+                                    JSONObject jsonObject = new JSONObject(response);
+                                    String status = jsonObject.getString("status");
+                                    String notification = jsonObject.getString("notification");
 
+                                    if (status.equals("successful")){
+                                        myDialog.dismiss();
+                                        Toast.makeText(getContext(), notification+" Process checklist", Toast.LENGTH_SHORT).show();
+                                        //go back to fragment checklist
+                                        Intent i = new Intent(getContext(), Dashboard.class);
+                                        startActivity(i);
+                                    }else{
+                                        myDialog.dismiss();
+                                        Toast.makeText(getContext(), "Sending Failed! please try again", Toast.LENGTH_SHORT).show();
+                                    }
 
-                //go back to fragment checklist
-                Intent i = new Intent(getContext(), Dashboard.class);
-                startActivity(i);
+                                }
+                                catch (JSONException e){
+                                    e.printStackTrace();
+                                    myDialog.dismiss();
+                                    Toast.makeText(getContext(), "You have submitted a response before... You can not submit again", Toast.LENGTH_LONG).show();
+                                    Intent i = new Intent(getContext(), Dashboard.class);
+                                    startActivity(i);
+                                }
+
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError volleyError) {
+
+                                if(volleyError == null){
+                                    return;
+                                }
+                                myDialog.dismiss();
+                                Toast.makeText(getContext(), "Error! Please check network connectivity and try again", Toast.LENGTH_SHORT).show();
+                            }
+                        }){
+                    @Override
+                    protected Map<String, String> getParams(){
+                        Map<String, String> params = new HashMap<>();
+                        params.put("lga", got_lga);
+                        params.put("dstate", got_state);
+                        params.put("user", got_email);
+                        params.put("q1", responses[0]);
+                        params.put("q2", responses[1]);
+                        params.put("q3", responses[2]);
+                        params.put("q4", responses[3]);
+                        params.put("q5", responses[4]);
+                        params.put("q6", responses[5]);
+                        params.put("q7", responses[6]);
+                        params.put("q8", responses[7]);
+                        params.put("q9", responses[8]);
+                        return params;
+                    }
+                };
+
+                RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+                DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                stringRequest.setRetryPolicy(retryPolicy);
+                requestQueue.add(stringRequest);
+                requestQueue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
+                    @Override
+                    public void onRequestFinished(Request<Object> request) {
+                        requestQueue.getCache().clear();
+                    }
+                });
+
 
                 //clear the array
                 arr_id.clear();

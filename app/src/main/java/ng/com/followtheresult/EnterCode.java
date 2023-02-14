@@ -3,7 +3,9 @@ package ng.com.followtheresult;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -38,6 +40,7 @@ public class EnterCode extends AppCompatActivity {
     String code;
     String email, fullname, state, lga;
     TextView resendCode;
+    SharedPreferences preferences;
 
     public static final String VERIFY = "https://readytoleadafrica.org/rtl_mobile/verify";
     public static final String RESEND_CODE = "https://readytoleadafrica.org/rtl_mobile/resend_verification_code";
@@ -47,6 +50,9 @@ public class EnterCode extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enter_code);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        preferences = getSharedPreferences("LoginDetails", Context.MODE_PRIVATE);
+        final SharedPreferences.Editor myEdit = preferences.edit();
 
         Intent i = getIntent();
         email = i.getStringExtra("email");
@@ -144,17 +150,54 @@ public class EnterCode extends AppCompatActivity {
                                     JSONObject jsonObject = new JSONObject(response);
 
                                     String status = jsonObject.getString("status");
+                                    String notification2 = jsonObject.getString("notification");
+                                    String email2 = jsonObject.getString("email");
+                                    String fullname2 = jsonObject.getString("fullname");
+                                    String phone2 = jsonObject.getString("phone");
+                                    String userType2 = jsonObject.getString("usertype");
+                                    String lga2 = jsonObject.getString("lga");
+                                    String state2 = jsonObject.getString("state");
+                                    String arrival_check2 = jsonObject.getString("arrival_check");
+                                    String process_check2 = jsonObject.getString("process_check");
+                                    String result_submit2 = jsonObject.getString("result_submit");
 
                                     if(status.equals("successful")){
                                         myDialog.dismiss();
                                         //tell user to check email and phone using string notification
                                         Toast.makeText(EnterCode.this, "Verification "+status, Toast.LENGTH_SHORT).show();
-                                        Intent i = new Intent(EnterCode.this, Dashboard.class);
-                                        i.putExtra("email", email);
-                                        i.putExtra("fullname", fullname);
-                                        i.putExtra("state", state);
-                                        i.putExtra("lga", lga);
-                                        startActivity(i);
+
+                                        //create shared preference for login
+                                        myEdit.putString( "email", email);
+                                        myEdit.putString("fullname", fullname2);
+                                        myEdit.putString("state", state2);
+                                        myEdit.putString("lga", lga2);
+                                        myEdit.putString("usertype", userType2);
+                                        myEdit.putString("arrival_check", arrival_check2);
+                                        myEdit.putString("process_check", process_check2);
+                                        myEdit.putString("result_submit", result_submit2);
+                                        myEdit.commit();
+
+                                        if (userType2.equals("admin")){
+                                            //go to state level view
+                                            //move to dashboard
+                                            Intent i = new Intent(EnterCode.this, Dashboard.class);
+                                            i.putExtra("email", email);
+                                            i.putExtra("fullname", fullname2);
+                                            i.putExtra("state", state2);
+                                            i.putExtra("lga", lga2);
+                                            i.putExtra("from", "state_level");
+                                            startActivity(i);
+                                        }else{
+                                            //go to normal view
+                                            //move to dashboard
+                                            Intent i = new Intent(EnterCode.this, Dashboard.class);
+                                            i.putExtra("email", email);
+                                            i.putExtra("fullname", fullname2);
+                                            i.putExtra("state", state2);
+                                            i.putExtra("lga", lga2);
+                                            i.putExtra("from", "lga_level");
+                                            startActivity(i);
+                                        }
 
                                     }else{
                                         myDialog.dismiss();
@@ -166,8 +209,7 @@ public class EnterCode extends AppCompatActivity {
                                 catch (JSONException e){
                                     e.printStackTrace();
                                     myDialog.dismiss();
-
-
+                                    Toast.makeText(EnterCode.this, "Verification failed", Toast.LENGTH_SHORT).show();
                                 }
 
                             }

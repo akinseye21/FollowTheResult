@@ -89,6 +89,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserratregular"
                     android:paddingTop="20dp"
+                    android:id="@+id/forgot_password"
                     android:text="Forgot password?"
                     android:textColor="#01c4e0"
                     android:textSize="15dp" />
@@ -104,7 +105,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center"
-                    android:layout_marginTop="30dp">
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="20dp">
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/login"

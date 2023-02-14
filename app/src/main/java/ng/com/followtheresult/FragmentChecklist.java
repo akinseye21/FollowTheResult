@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -20,7 +21,9 @@ public class FragmentChecklist extends Fragment {
 
     RelativeLayout arrivalChecklist, processChecklist, resultsChecklist;
     TextView fullname, state, lga;
-    SharedPreferences preferences;
+    SharedPreferences preferences, preferences2;
+    LinearLayout lin_lga, lin_lgacount;
+    TextView lgaCount;
 
     public FragmentChecklist() {
         // Required empty public constructor
@@ -38,14 +41,28 @@ public class FragmentChecklist extends Fragment {
         final String got_fullname = preferences.getString("fullname", "not available");
         final String got_state = preferences.getString("state", "not available");
         final String got_lga = preferences.getString("lga", "not available");
+        final String usertype = preferences.getString("usertype", "");
+
+        preferences2 = getActivity().getSharedPreferences("lga_count", Context.MODE_PRIVATE);
+        final String lga_count = preferences2.getString("lgacount", "1");
 
         fullname = v.findViewById(R.id.fullname);
         state = v.findViewById(R.id.state);
         lga = v.findViewById(R.id.lga);
+        lin_lga = v.findViewById(R.id.lin_lga);
+        lin_lgacount = v.findViewById(R.id.lin_lgacount);
+        lgaCount = v.findViewById(R.id.lga_count);
 
         fullname.setText(got_fullname);
         state.setText(got_state);
         lga.setText(got_lga);
+        lgaCount.setText(lga_count);
+
+        if(usertype.equals("admin")){
+            lin_lga.setVisibility(View.GONE);
+        }else{
+            lin_lgacount.setVisibility(View.GONE);
+        }
 
 
         arrivalChecklist = v.findViewById(R.id.arrivalChecklist);
@@ -62,10 +79,6 @@ public class FragmentChecklist extends Fragment {
                 transaction.replace(R.id.fragmentChecklist, fragmentArrivalChecklist1).addToBackStack(null);
                 transaction.commit();
 
-//                Intent i = new Intent(getContext(), ArrivalChecklist.class);
-//                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                startActivity(i);
             }
         });
 
@@ -80,10 +93,6 @@ public class FragmentChecklist extends Fragment {
                 transaction.replace(R.id.fragmentChecklist, fragmentProcessChecklist).addToBackStack(null);
                 transaction.commit();
 
-//                Intent i = new Intent(getContext(), ProcessChecklist.class);
-//                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                startActivity(i);
             }
         });
 

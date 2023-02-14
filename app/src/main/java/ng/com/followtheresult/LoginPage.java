@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -38,6 +39,7 @@ public class LoginPage extends AppCompatActivity {
     EditText email, password;
     public static final String LOGIN = "https://readytoleadafrica.org/rtl_mobile/login";
     SharedPreferences preferences;
+    TextView forgotPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +50,18 @@ public class LoginPage extends AppCompatActivity {
         preferences = getSharedPreferences("LoginDetails", Context.MODE_PRIVATE);
         final SharedPreferences.Editor myEdit = preferences.edit();
 
+        forgotPassword = findViewById(R.id.forgot_password);
         email = findViewById(R.id.edtemail);
         password = findViewById(R.id.edtpassword);
+
+        forgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //forgot password page
+                Intent i = new Intent(getApplicationContext(), EmailInputForgotPassword.class);
+                startActivity(i);
+            }
+        });
 
         login = findViewById(R.id.login);
         login.setOnClickListener(new View.OnClickListener() {
@@ -80,8 +92,13 @@ public class LoginPage extends AppCompatActivity {
                                     String email = jsonObject.getString("email");
                                     String fullname = jsonObject.getString("fullname");
                                     String phone = jsonObject.getString("phone");
+                                    String userType = jsonObject.getString("usertype");
                                     String lga = jsonObject.getString("lga");
                                     String state = jsonObject.getString("state");
+                                    String arrival_check = jsonObject.getString("arrival_check");
+                                    String process_check = jsonObject.getString("process_check");
+                                    String result_submit = jsonObject.getString("result_submit");
+
 
                                     if(status.equals("login successful")){
                                         myDialog.dismiss();
@@ -92,14 +109,35 @@ public class LoginPage extends AppCompatActivity {
                                         myEdit.putString("fullname", fullname);
                                         myEdit.putString("state", state);
                                         myEdit.putString("lga", lga);
+                                        myEdit.putString("usertype", userType);
+                                        myEdit.putString("arrival_check", arrival_check);
+                                        myEdit.putString("process_check", process_check);
+                                        myEdit.putString("result_submit", result_submit);
                                         myEdit.commit();
-                                        //move to dashboard
-                                        Intent i = new Intent(LoginPage.this, Dashboard.class);
-                                        i.putExtra("email", email);
-                                        i.putExtra("fullname", fullname);
-                                        i.putExtra("state", state);
-                                        i.putExtra("lga", lga);
-                                        startActivity(i);
+
+                                        if (userType.equals("admin")){
+                                            //go to state level view
+                                            //move to dashboard
+                                            Intent i = new Intent(LoginPage.this, Dashboard.class);
+                                            i.putExtra("email", email);
+                                            i.putExtra("fullname", fullname);
+                                            i.putExtra("state", state);
+                                            i.putExtra("lga", lga);
+                                            i.putExtra("from", "state_level");
+                                            startActivity(i);
+                                        }else{
+                                            //go to normal view
+                                            //move to dashboard
+                                            Intent i = new Intent(LoginPage.this, Dashboard.class);
+                                            i.putExtra("email", email);
+                                            i.putExtra("fullname", fullname);
+                                            i.putExtra("state", state);
+                                            i.putExtra("lga", lga);
+                                            i.putExtra("from", "lga_level");
+                                            startActivity(i);
+                                        }
+
+
                                     }else{
                                         Toast.makeText(LoginPage.this, "Login failed. Please try again", Toast.LENGTH_SHORT).show();
                                     }

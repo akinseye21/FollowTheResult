@@ -12,6 +12,8 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,11 +45,14 @@ import java.util.Map;
 public class FragmentArrivalChecklist1 extends Fragment {
 
     TextView fullname, state, lga;
-    SharedPreferences preferences;
+    SharedPreferences preferences, preferences2;
+    String usertype;
+    LinearLayout lin_lga, lin_lgacount;
 
     Dialog myDialog, myDialog2;
     AppCompatButton next;
     public static final String GET_QUESTIONS = "https://readytoleadafrica.org/rtl_mobile/get_questions";
+    public static final String SUBMIT_ARRIVAL = "https://readytoleadafrica.org/rtl_mobile/arrival_checks";
 
     ArrayList<String> arr_id;
     ArrayList<String> arr_question;
@@ -68,12 +73,14 @@ public class FragmentArrivalChecklist1 extends Fragment {
     EditText num1, num2, num3, num4;
     EditText textInfo;
     AppCompatButton previous;
+    TextView lgaCount;
 
     LinearLayout popup;
     ListView listView;
     AppCompatButton submission;
 
     String[] responses;
+    String got_fullname, got_state, got_lga, got_email;
 
 
     public FragmentArrivalChecklist1() {
@@ -88,17 +95,32 @@ public class FragmentArrivalChecklist1 extends Fragment {
         View v = inflater.inflate(R.layout.fragment_arrival_checklist1, container, false);
 
         preferences = getActivity().getSharedPreferences("LoginDetails", Context.MODE_PRIVATE);
-        final String got_fullname = preferences.getString("fullname", "not available");
-        final String got_state = preferences.getString("state", "not available");
-        final String got_lga = preferences.getString("lga", "not available");
+        got_fullname = preferences.getString("fullname", "not available");
+        got_state = preferences.getString("state", "not available");
+        got_lga = preferences.getString("lga", "not available");
+        got_email = preferences.getString("email", "not available");
+        usertype = preferences.getString("usertype", "");
+
+        preferences2 = getActivity().getSharedPreferences("lga_count", Context.MODE_PRIVATE);
+        final String lga_count = preferences2.getString("lgacount", "1");
 
         fullname = v.findViewById(R.id.fullname);
         state = v.findViewById(R.id.state);
         lga = v.findViewById(R.id.lga);
+        lin_lga = v.findViewById(R.id.lin_lga);
+        lin_lgacount = v.findViewById(R.id.lin_lgacount);
+        lgaCount = v.findViewById(R.id.lga_count);
 
         fullname.setText(got_fullname);
         state.setText(got_state);
         lga.setText(got_lga);
+        lgaCount.setText(lga_count);
+
+        if(usertype.equals("admin")){
+            lin_lga.setVisibility(View.GONE);
+        }else{
+            lin_lgacount.setVisibility(View.GONE);
+        }
 
         //get the views
         presentQuestion = v.findViewById(R.id.presentquestion);
@@ -135,7 +157,6 @@ public class FragmentArrivalChecklist1 extends Fragment {
         myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         myDialog.setCanceledOnTouchOutside(false);
         myDialog.show();
-
 
 
         arr_id = new ArrayList<>();
@@ -469,10 +490,69 @@ public class FragmentArrivalChecklist1 extends Fragment {
             radioGroupYesNo.setVisibility(View.GONE);
             textInfo.setVisibility(View.GONE);
 
+            //carry out the edittext one whole movement here
+            num1.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                    if (num1.getText().toString().length()==1){
+                        num2.requestFocus();
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+            num2.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                    if (num2.getText().toString().length()==1){
+                        num3.requestFocus();
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+            num3.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                    if (num3.getText().toString().length()==1){
+                        num4.requestFocus();
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+
             next.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(num2.getText().toString().equals("") || num3.getText().toString().equals("") || num4.getText().toString().equals("")){
+                    if(num1.getText().toString().equals("") || num2.getText().toString().equals("") || num3.getText().toString().equals("") || num4.getText().toString().equals("")){
                         Toast.makeText(getContext(), "Time fields can not be empty", Toast.LENGTH_SHORT).show();
                     }else{
                         if(count == arr_id.size()){
@@ -520,12 +600,89 @@ public class FragmentArrivalChecklist1 extends Fragment {
         submission.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //show Dialog that is loading the information
+                myDialog = new Dialog(getContext());
+                myDialog.setContentView(R.layout.custom_popup_loading);
+                TextView text = myDialog.findViewById(R.id.text);
+                text.setText("Submitting Response... Please wait");
+                myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                myDialog.setCanceledOnTouchOutside(false);
+                myDialog.show();
+
                 //send the results to the DB
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, SUBMIT_ARRIVAL,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                try{
+                                    JSONObject jsonObject = new JSONObject(response);
+                                    String status = jsonObject.getString("status");
+                                    String notification = jsonObject.getString("notification");
+
+                                    if (status.equals("successful")){
+                                        myDialog.dismiss();
+                                        Toast.makeText(getContext(), notification+" Arrival checklist", Toast.LENGTH_SHORT).show();
+                                        //go back to fragment checklist
+                                        Intent i = new Intent(getContext(), Dashboard.class);
+                                        startActivity(i);
+                                    }else{
+                                        myDialog.dismiss();
+                                        Toast.makeText(getContext(), "Sending Failed! please try again", Toast.LENGTH_SHORT).show();
+                                    }
+
+                                }
+                                catch (JSONException e){
+                                    e.printStackTrace();
+                                    myDialog.dismiss();
+
+                                    Toast.makeText(getContext(), "You have submitted a response before... You can not submit again", Toast.LENGTH_LONG).show();
+                                    Intent i = new Intent(getContext(), Dashboard.class);
+                                    startActivity(i);
+                                }
+
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError volleyError) {
+
+                                if(volleyError == null){
+                                    return;
+                                }
+                                myDialog.dismiss();
+                                Toast.makeText(getContext(), "Error! Please check network connectivity and try again", Toast.LENGTH_SHORT).show();
+                            }
+                        }){
+                    @Override
+                    protected Map<String, String> getParams(){
+                        Map<String, String> params = new HashMap<>();
+                        params.put("lga", got_lga);
+                        params.put("dstate", got_state);
+                        params.put("user", got_email);
+                        params.put("observer_arrival", responses[0]);
+                        params.put("collation_arrival", responses[1]);
+                        params.put("obs_permit", responses[2]);
+                        params.put("sum_collation_officer", responses[3]);
+                        params.put("female_collation_officer", responses[4]);
+                        params.put("security", responses[5]);
+                        params.put("party_agents", responses[6]);
+                        params.put("pwd_access", responses[7]);
+                        return params;
+                    }
+                };
+
+                RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+                DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                stringRequest.setRetryPolicy(retryPolicy);
+                requestQueue.add(stringRequest);
+                requestQueue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
+                    @Override
+                    public void onRequestFinished(Request<Object> request) {
+                        requestQueue.getCache().clear();
+                    }
+                });
 
 
-                //go back to fragment checklist
-                Intent i = new Intent(getContext(), Dashboard.class);
-                startActivity(i);
 
                 //clear the array
                 arr_id.clear();

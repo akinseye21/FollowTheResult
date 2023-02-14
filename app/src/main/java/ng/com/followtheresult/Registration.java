@@ -42,6 +42,7 @@ public class Registration extends AppCompatActivity {
     AppCompatButton register;
     ProgressBar prglga;
     Dialog myDialog;
+    TextView verify;
 
     String user_fullname, user_email, user_phone, user_password, user_lga, user_state;
     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
@@ -74,7 +75,15 @@ public class Registration extends AppCompatActivity {
         state = findViewById(R.id.spinnerstate);
         register = findViewById(R.id.signup);
         prglga = findViewById(R.id.progressBarLGA);
+        verify = findViewById(R.id.verify);
 
+        verify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(), EmailInput.class);
+                startActivity(i);
+            }
+        });
 
 
 
@@ -197,7 +206,7 @@ public class Registration extends AppCompatActivity {
                                 public void onResponse(String response) {
 
                                     System.out.println("Signup Response = "+response);
-                                    Toast.makeText(Registration.this, "Response = "+response, Toast.LENGTH_SHORT).show();
+//                                    Toast.makeText(Registration.this, "Response = "+response, Toast.LENGTH_SHORT).show();
 
                                     try{
                                         JSONObject jsonObject = new JSONObject(response);

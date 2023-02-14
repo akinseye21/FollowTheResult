@@ -3,8 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@null"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".FragmentResult">
+    tools:context=".FragmentResultState">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -155,19 +156,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="50dp"
-                        android:paddingLeft="20dp"
-                        android:paddingRight="20dp"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp"
-                        android:text="Presidential Results"
-                        android:fontFamily="@font/montserratbold"
+                        android:id="@+id/lgaName"
                         android:background="@drawable/normal_white_corner"
-                        android:textColor="@color/defaultDark"/>
+                        android:fontFamily="@font/montserratbold"
+                        android:paddingLeft="20dp"
+                        android:paddingTop="10dp"
+                        android:paddingRight="20dp"
+                        android:paddingBottom="10dp"
+                        android:text="State Results"
+                        android:textColor="@color/defaultDark" />
                     <RelativeLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -183,13 +186,13 @@
                     </RelativeLayout>
                 </RelativeLayout>
 
-<!--                <ListView-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="300dp"-->
-<!--                    android:id="@+id/listview"-->
-<!--                    android:dividerHeight="0dp"-->
-<!--                    android:divider="@null"-->
-<!--                    android:layout_marginTop="20dp"/>-->
+                <!--                <ListView-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="300dp"-->
+                <!--                    android:id="@+id/listview"-->
+                <!--                    android:dividerHeight="0dp"-->
+                <!--                    android:divider="@null"-->
+                <!--                    android:layout_marginTop="20dp"/>-->
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -220,8 +223,8 @@
                         android:paddingRight="10dp"
                         android:paddingBottom="5dp"
                         android:text="Votes for Party AP"
-                        android:textSize="8dp"
                         android:textColor="@color/white"
+                        android:textSize="8dp"
                         android:textStyle="bold" />
 
                     <LinearLayout
@@ -229,10 +232,41 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:gravity="center"
+                        android:layout_toLeftOf="@+id/end1"
+                        android:layout_marginRight="10dp"
+                        android:layout_centerVertical="true">
+                        <EditText
+                            android:layout_width="80dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/normal_white_corner"
+                            android:textColor="#b5b5b5"
+                            android:id="@+id/count1"
+                            android:editable="false"
+                            android:clickable="false"
+                            android:text="0"
+                            android:textSize="15dp"
+                            android:layout_centerInParent="true"
+                            android:gravity="center"
+                            android:fontFamily="@font/montserratbold"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Count from LGA"
+                            android:textSize="8dp"
+                            android:textColor="@color/defaultDark"
+                            android:fontFamily="@font/montserratlight"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:id="@+id/end1"
                         android:layout_centerVertical="true"
                         android:layout_alignParentRight="true">
                         <EditText
-                            android:layout_width="150dp"
+                            android:layout_width="80dp"
                             android:layout_height="30dp"
                             android:background="@drawable/normal_white_corner"
                             android:textColor="@color/defaultDark"
@@ -290,10 +324,41 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:gravity="center"
+                        android:layout_toLeftOf="@id/end2"
+                        android:layout_marginRight="10dp"
+                        android:layout_centerVertical="true">
+                        <EditText
+                            android:layout_width="80dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/normal_white_corner"
+                            android:textColor="#b5b5b5"
+                            android:id="@+id/count2"
+                            android:editable="false"
+                            android:clickable="false"
+                            android:text="0"
+                            android:textSize="15dp"
+                            android:layout_centerInParent="true"
+                            android:gravity="center"
+                            android:fontFamily="@font/montserratbold"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Count from LGA"
+                            android:textSize="8dp"
+                            android:textColor="@color/defaultDark"
+                            android:fontFamily="@font/montserratlight"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:id="@+id/end2"
                         android:layout_centerVertical="true"
                         android:layout_alignParentRight="true">
                         <EditText
-                            android:layout_width="150dp"
+                            android:layout_width="80dp"
                             android:layout_height="30dp"
                             android:background="@drawable/normal_white_corner"
                             android:textColor="@color/defaultDark"
@@ -351,10 +416,42 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:gravity="center"
+                        android:layout_toLeftOf="@id/end3"
+                        android:layout_marginRight="10dp"
+                        android:layout_centerInParent="true"
+                        android:layout_centerVertical="true">
+                        <EditText
+                            android:layout_width="80dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/normal_white_corner"
+                            android:textColor="#b5b5b5"
+                            android:id="@+id/count3"
+                            android:editable="false"
+                            android:clickable="false"
+                            android:text="0"
+                            android:textSize="15dp"
+                            android:layout_centerInParent="true"
+                            android:gravity="center"
+                            android:fontFamily="@font/montserratbold"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Count from LGA"
+                            android:textSize="8dp"
+                            android:textColor="@color/defaultDark"
+                            android:fontFamily="@font/montserratlight"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:id="@+id/end3"
                         android:layout_centerVertical="true"
                         android:layout_alignParentRight="true">
                         <EditText
-                            android:layout_width="150dp"
+                            android:layout_width="80dp"
                             android:layout_height="30dp"
                             android:background="@drawable/normal_white_corner"
                             android:textColor="@color/defaultDark"
@@ -412,10 +509,42 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:gravity="center"
+                        android:layout_toLeftOf="@id/end4"
+                        android:layout_marginRight="10dp"
+                        android:layout_centerInParent="true"
+                        android:layout_centerVertical="true">
+                        <EditText
+                            android:layout_width="80dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/normal_white_corner"
+                            android:textColor="#b5b5b5"
+                            android:id="@+id/count4"
+                            android:editable="false"
+                            android:clickable="false"
+                            android:text="0"
+                            android:textSize="15dp"
+                            android:layout_centerInParent="true"
+                            android:gravity="center"
+                            android:fontFamily="@font/montserratbold"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Count from LGA"
+                            android:textSize="8dp"
+                            android:textColor="@color/defaultDark"
+                            android:fontFamily="@font/montserratlight"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:id="@+id/end4"
                         android:layout_centerVertical="true"
                         android:layout_alignParentRight="true">
                         <EditText
-                            android:layout_width="150dp"
+                            android:layout_width="80dp"
                             android:layout_height="30dp"
                             android:background="@drawable/normal_white_corner"
                             android:textColor="@color/defaultDark"
@@ -473,10 +602,42 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:gravity="center"
+                        android:layout_toLeftOf="@id/end5"
+                        android:layout_marginRight="10dp"
+                        android:layout_centerInParent="true"
+                        android:layout_centerVertical="true">
+                        <EditText
+                            android:layout_width="80dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/normal_white_corner"
+                            android:textColor="#b5b5b5"
+                            android:id="@+id/count5"
+                            android:editable="false"
+                            android:clickable="false"
+                            android:text="0"
+                            android:textSize="15dp"
+                            android:layout_centerInParent="true"
+                            android:gravity="center"
+                            android:fontFamily="@font/montserratbold"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Count from LGA"
+                            android:textSize="8dp"
+                            android:textColor="@color/defaultDark"
+                            android:fontFamily="@font/montserratlight"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:id="@+id/end5"
                         android:layout_centerVertical="true"
                         android:layout_alignParentRight="true">
                         <EditText
-                            android:layout_width="150dp"
+                            android:layout_width="80dp"
                             android:layout_height="30dp"
                             android:background="@drawable/normal_white_corner"
                             android:textColor="@color/defaultDark"
@@ -534,10 +695,42 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:gravity="center"
+                        android:layout_toLeftOf="@id/end6"
+                        android:layout_marginRight="10dp"
+                        android:layout_centerInParent="true"
+                        android:layout_centerVertical="true">
+                        <EditText
+                            android:layout_width="80dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/normal_white_corner"
+                            android:textColor="#b5b5b5"
+                            android:id="@+id/count6"
+                            android:editable="false"
+                            android:clickable="false"
+                            android:text="0"
+                            android:textSize="15dp"
+                            android:layout_centerInParent="true"
+                            android:gravity="center"
+                            android:fontFamily="@font/montserratbold"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Count from LGA"
+                            android:textSize="8dp"
+                            android:textColor="@color/defaultDark"
+                            android:fontFamily="@font/montserratlight"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:id="@+id/end6"
                         android:layout_centerVertical="true"
                         android:layout_alignParentRight="true">
                         <EditText
-                            android:layout_width="150dp"
+                            android:layout_width="80dp"
                             android:layout_height="30dp"
                             android:background="@drawable/normal_white_corner"
                             android:textColor="@color/defaultDark"
@@ -595,10 +788,42 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:gravity="center"
+                        android:layout_toLeftOf="@id/end7"
+                        android:layout_marginRight="10dp"
+                        android:layout_centerInParent="true"
+                        android:layout_centerVertical="true">
+                        <EditText
+                            android:layout_width="80dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/normal_white_corner"
+                            android:textColor="#b5b5b5"
+                            android:id="@+id/count7"
+                            android:editable="false"
+                            android:clickable="false"
+                            android:text="0"
+                            android:textSize="15dp"
+                            android:layout_centerInParent="true"
+                            android:gravity="center"
+                            android:fontFamily="@font/montserratbold"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Count from LGA"
+                            android:textSize="8dp"
+                            android:textColor="@color/defaultDark"
+                            android:fontFamily="@font/montserratlight"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:id="@+id/end7"
                         android:layout_centerVertical="true"
                         android:layout_alignParentRight="true">
                         <EditText
-                            android:layout_width="150dp"
+                            android:layout_width="80dp"
                             android:layout_height="30dp"
                             android:background="@drawable/normal_white_corner"
                             android:textColor="@color/defaultDark"
@@ -656,10 +881,42 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:gravity="center"
+                        android:layout_toLeftOf="@id/end8"
+                        android:layout_marginRight="10dp"
+                        android:layout_centerInParent="true"
+                        android:layout_centerVertical="true">
+                        <EditText
+                            android:layout_width="80dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/normal_white_corner"
+                            android:textColor="#b5b5b5"
+                            android:id="@+id/count8"
+                            android:editable="false"
+                            android:clickable="false"
+                            android:text="0"
+                            android:textSize="15dp"
+                            android:layout_centerInParent="true"
+                            android:gravity="center"
+                            android:fontFamily="@font/montserratbold"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Count from LGA"
+                            android:textSize="8dp"
+                            android:textColor="@color/defaultDark"
+                            android:fontFamily="@font/montserratlight"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:id="@+id/end8"
                         android:layout_centerVertical="true"
                         android:layout_alignParentRight="true">
                         <EditText
-                            android:layout_width="150dp"
+                            android:layout_width="80dp"
                             android:layout_height="30dp"
                             android:background="@drawable/normal_white_corner"
                             android:textColor="@color/defaultDark"
@@ -717,10 +974,42 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:gravity="center"
+                        android:layout_toLeftOf="@id/end9"
+                        android:layout_marginRight="10dp"
+                        android:layout_centerInParent="true"
+                        android:layout_centerVertical="true">
+                        <EditText
+                            android:layout_width="80dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/normal_white_corner"
+                            android:textColor="#b5b5b5"
+                            android:id="@+id/count9"
+                            android:editable="false"
+                            android:clickable="false"
+                            android:text="0"
+                            android:textSize="15dp"
+                            android:layout_centerInParent="true"
+                            android:gravity="center"
+                            android:fontFamily="@font/montserratbold"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Count from LGA"
+                            android:textSize="8dp"
+                            android:textColor="@color/defaultDark"
+                            android:fontFamily="@font/montserratlight"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:id="@+id/end9"
                         android:layout_centerVertical="true"
                         android:layout_alignParentRight="true">
                         <EditText
-                            android:layout_width="150dp"
+                            android:layout_width="80dp"
                             android:layout_height="30dp"
                             android:background="@drawable/normal_white_corner"
                             android:textColor="@color/defaultDark"
@@ -778,10 +1067,42 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:gravity="center"
+                        android:layout_toLeftOf="@id/end10"
+                        android:layout_marginRight="10dp"
+                        android:layout_centerInParent="true"
+                        android:layout_centerVertical="true">
+                        <EditText
+                            android:layout_width="80dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/normal_white_corner"
+                            android:textColor="#b5b5b5"
+                            android:id="@+id/count10"
+                            android:editable="false"
+                            android:clickable="false"
+                            android:text="0"
+                            android:textSize="15dp"
+                            android:layout_centerInParent="true"
+                            android:gravity="center"
+                            android:fontFamily="@font/montserratbold"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Count from LGA"
+                            android:textSize="8dp"
+                            android:textColor="@color/defaultDark"
+                            android:fontFamily="@font/montserratlight"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:id="@+id/end10"
                         android:layout_centerVertical="true"
                         android:layout_alignParentRight="true">
                         <EditText
-                            android:layout_width="150dp"
+                            android:layout_width="80dp"
                             android:layout_height="30dp"
                             android:background="@drawable/normal_white_corner"
                             android:textColor="@color/defaultDark"
@@ -839,10 +1160,42 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:gravity="center"
+                        android:layout_toLeftOf="@id/end11"
+                        android:layout_marginRight="10dp"
+                        android:layout_centerInParent="true"
+                        android:layout_centerVertical="true">
+                        <EditText
+                            android:layout_width="80dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/normal_white_corner"
+                            android:textColor="#b5b5b5"
+                            android:id="@+id/count11"
+                            android:editable="false"
+                            android:clickable="false"
+                            android:text="0"
+                            android:textSize="15dp"
+                            android:layout_centerInParent="true"
+                            android:gravity="center"
+                            android:fontFamily="@font/montserratbold"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Count from LGA"
+                            android:textSize="8dp"
+                            android:textColor="@color/defaultDark"
+                            android:fontFamily="@font/montserratlight"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:id="@+id/end11"
                         android:layout_centerVertical="true"
                         android:layout_alignParentRight="true">
                         <EditText
-                            android:layout_width="150dp"
+                            android:layout_width="80dp"
                             android:layout_height="30dp"
                             android:background="@drawable/normal_white_corner"
                             android:textColor="@color/defaultDark"
@@ -900,10 +1253,42 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:gravity="center"
+                        android:layout_toLeftOf="@id/end12"
+                        android:layout_marginRight="10dp"
+                        android:layout_centerInParent="true"
+                        android:layout_centerVertical="true">
+                        <EditText
+                            android:layout_width="80dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/normal_white_corner"
+                            android:textColor="#b5b5b5"
+                            android:id="@+id/count12"
+                            android:editable="false"
+                            android:clickable="false"
+                            android:text="0"
+                            android:textSize="15dp"
+                            android:layout_centerInParent="true"
+                            android:gravity="center"
+                            android:fontFamily="@font/montserratbold"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Count from LGA"
+                            android:textSize="8dp"
+                            android:textColor="@color/defaultDark"
+                            android:fontFamily="@font/montserratlight"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:id="@+id/end12"
                         android:layout_centerVertical="true"
                         android:layout_alignParentRight="true">
                         <EditText
-                            android:layout_width="150dp"
+                            android:layout_width="80dp"
                             android:layout_height="30dp"
                             android:background="@drawable/normal_white_corner"
                             android:textColor="@color/defaultDark"
@@ -961,10 +1346,42 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:gravity="center"
+                        android:layout_toLeftOf="@id/end13"
+                        android:layout_marginRight="10dp"
+                        android:layout_centerInParent="true"
+                        android:layout_centerVertical="true">
+                        <EditText
+                            android:layout_width="80dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/normal_white_corner"
+                            android:textColor="#b5b5b5"
+                            android:id="@+id/count13"
+                            android:editable="false"
+                            android:clickable="false"
+                            android:text="0"
+                            android:textSize="15dp"
+                            android:layout_centerInParent="true"
+                            android:gravity="center"
+                            android:fontFamily="@font/montserratbold"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Count from LGA"
+                            android:textSize="8dp"
+                            android:textColor="@color/defaultDark"
+                            android:fontFamily="@font/montserratlight"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:id="@+id/end13"
                         android:layout_centerVertical="true"
                         android:layout_alignParentRight="true">
                         <EditText
-                            android:layout_width="150dp"
+                            android:layout_width="80dp"
                             android:layout_height="30dp"
                             android:background="@drawable/normal_white_corner"
                             android:textColor="@color/defaultDark"
@@ -1022,10 +1439,42 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:gravity="center"
+                        android:layout_toLeftOf="@id/end14"
+                        android:layout_marginRight="10dp"
+                        android:layout_centerInParent="true"
+                        android:layout_centerVertical="true">
+                        <EditText
+                            android:layout_width="80dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/normal_white_corner"
+                            android:textColor="#b5b5b5"
+                            android:id="@+id/count14"
+                            android:editable="false"
+                            android:clickable="false"
+                            android:text="0"
+                            android:textSize="15dp"
+                            android:layout_centerInParent="true"
+                            android:gravity="center"
+                            android:fontFamily="@font/montserratbold"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Count from LGA"
+                            android:textSize="8dp"
+                            android:textColor="@color/defaultDark"
+                            android:fontFamily="@font/montserratlight"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:id="@+id/end14"
                         android:layout_centerVertical="true"
                         android:layout_alignParentRight="true">
                         <EditText
-                            android:layout_width="150dp"
+                            android:layout_width="80dp"
                             android:layout_height="30dp"
                             android:background="@drawable/normal_white_corner"
                             android:textColor="@color/defaultDark"
@@ -1083,10 +1532,42 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:gravity="center"
+                        android:layout_toLeftOf="@id/end15"
+                        android:layout_marginRight="10dp"
+                        android:layout_centerInParent="true"
+                        android:layout_centerVertical="true">
+                        <EditText
+                            android:layout_width="80dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/normal_white_corner"
+                            android:textColor="#b5b5b5"
+                            android:id="@+id/count15"
+                            android:editable="false"
+                            android:clickable="false"
+                            android:text="0"
+                            android:textSize="15dp"
+                            android:layout_centerInParent="true"
+                            android:gravity="center"
+                            android:fontFamily="@font/montserratbold"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Count from LGA"
+                            android:textSize="8dp"
+                            android:textColor="@color/defaultDark"
+                            android:fontFamily="@font/montserratlight"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:id="@+id/end15"
                         android:layout_centerVertical="true"
                         android:layout_alignParentRight="true">
                         <EditText
-                            android:layout_width="150dp"
+                            android:layout_width="80dp"
                             android:layout_height="30dp"
                             android:background="@drawable/normal_white_corner"
                             android:textColor="@color/defaultDark"
@@ -1144,10 +1625,42 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:gravity="center"
+                        android:layout_toLeftOf="@id/end16"
+                        android:layout_marginRight="10dp"
+                        android:layout_centerInParent="true"
+                        android:layout_centerVertical="true">
+                        <EditText
+                            android:layout_width="80dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/normal_white_corner"
+                            android:textColor="#b5b5b5"
+                            android:id="@+id/count16"
+                            android:editable="false"
+                            android:clickable="false"
+                            android:text="0"
+                            android:textSize="15dp"
+                            android:layout_centerInParent="true"
+                            android:gravity="center"
+                            android:fontFamily="@font/montserratbold"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Count from LGA"
+                            android:textSize="8dp"
+                            android:textColor="@color/defaultDark"
+                            android:fontFamily="@font/montserratlight"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:id="@+id/end16"
                         android:layout_centerVertical="true"
                         android:layout_alignParentRight="true">
                         <EditText
-                            android:layout_width="150dp"
+                            android:layout_width="80dp"
                             android:layout_height="30dp"
                             android:background="@drawable/normal_white_corner"
                             android:textColor="@color/defaultDark"
@@ -1205,10 +1718,42 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:gravity="center"
+                        android:layout_toLeftOf="@id/end17"
+                        android:layout_marginRight="10dp"
+                        android:layout_centerInParent="true"
+                        android:layout_centerVertical="true">
+                        <EditText
+                            android:layout_width="80dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/normal_white_corner"
+                            android:textColor="#b5b5b5"
+                            android:id="@+id/count17"
+                            android:editable="false"
+                            android:clickable="false"
+                            android:text="0"
+                            android:textSize="15dp"
+                            android:layout_centerInParent="true"
+                            android:gravity="center"
+                            android:fontFamily="@font/montserratbold"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Count from LGA"
+                            android:textSize="8dp"
+                            android:textColor="@color/defaultDark"
+                            android:fontFamily="@font/montserratlight"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:id="@+id/end17"
                         android:layout_centerVertical="true"
                         android:layout_alignParentRight="true">
                         <EditText
-                            android:layout_width="150dp"
+                            android:layout_width="80dp"
                             android:layout_height="30dp"
                             android:background="@drawable/normal_white_corner"
                             android:textColor="@color/defaultDark"
@@ -1266,10 +1811,42 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:gravity="center"
+                        android:layout_toLeftOf="@id/end18"
+                        android:layout_marginRight="10dp"
+                        android:layout_centerInParent="true"
+                        android:layout_centerVertical="true">
+                        <EditText
+                            android:layout_width="80dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/normal_white_corner"
+                            android:textColor="#b5b5b5"
+                            android:id="@+id/count18"
+                            android:editable="false"
+                            android:clickable="false"
+                            android:text="0"
+                            android:textSize="15dp"
+                            android:layout_centerInParent="true"
+                            android:gravity="center"
+                            android:fontFamily="@font/montserratbold"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Count from LGA"
+                            android:textSize="8dp"
+                            android:textColor="@color/defaultDark"
+                            android:fontFamily="@font/montserratlight"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:id="@+id/end18"
                         android:layout_centerVertical="true"
                         android:layout_alignParentRight="true">
                         <EditText
-                            android:layout_width="150dp"
+                            android:layout_width="80dp"
                             android:layout_height="30dp"
                             android:background="@drawable/normal_white_corner"
                             android:textColor="@color/defaultDark"
@@ -1298,7 +1875,7 @@
                     android:layout_marginTop="20dp"
                     android:background="@drawable/normal_red_corner"
                     android:fontFamily="@font/montserratmedium"
-                    android:text="Submit"
+                    android:text="Verify"
                     android:textAllCaps="false"
                     android:textColor="@color/defaultWhite" />
 

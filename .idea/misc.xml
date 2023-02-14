@@ -19,26 +19,33 @@
         <entry key="app/src/main/res/drawable/white_up.xml" value="0.158" />
         <entry key="app/src/main/res/layout/activity_arrival_checklist.xml" value="0.29739583333333336" />
         <entry key="app/src/main/res/layout/activity_dashboard.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_email_input.xml" value="0.21240942028985507" />
+        <entry key="app/src/main/res/layout/activity_email_input_forgot_password.xml" value="0.21240942028985507" />
         <entry key="app/src/main/res/layout/activity_enter_code.xml" value="0.2828125" />
+        <entry key="app/src/main/res/layout/activity_enter_code_forget_password.xml" value="0.21240942028985507" />
         <entry key="app/src/main/res/layout/activity_login_page.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_process_checklist.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_reeset_password.xml" value="0.21240942028985507" />
         <entry key="app/src/main/res/layout/activity_registration.xml" value="0.27414330218068533" />
-        <entry key="app/src/main/res/layout/custom_popup_loading.xml" value="0.29635416666666664" />
+        <entry key="app/src/main/res/layout/custom_popup_loading.xml" value="0.25" />
         <entry key="app/src/main/res/layout/custom_popup_validate.xml" value="0.29635416666666664" />
         <entry key="app/src/main/res/layout/fragment_arrival_checklist1.xml" value="0.26575342465753427" />
         <entry key="app/src/main/res/layout/fragment_arrival_checklist2.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/fragment_arrival_checklist3.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/fragment_arrival_checklist4.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/fragment_arrival_checklist5.xml" value="0.19610507246376813" />
-        <entry key="app/src/main/res/layout/fragment_checklist.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_checklist.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_contact_center.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_process_checklist.xml" value="0.29739583333333336" />
         <entry key="app/src/main/res/layout/fragment_result.xml" value="0.19610507246376813" />
-        <entry key="app/src/main/res/layout/fragment_user_profile.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/fragment_result_state.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_result_verification.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_user_profile.xml" value="0.25" />
         <entry key="app/src/main/res/layout/list_arrival_result.xml" value="0.29635416666666664" />
-        <entry key="app/src/main/res/layout/listitem_party_result.xml" value="0.19610507246376813" />
+        <entry key="app/src/main/res/layout/list_lga.xml" value="0.21240942028985507" />
+        <entry key="app/src/main/res/layout/listitem_party_result.xml" value="0.25" />
         <entry key="app/src/main/res/layout/simple_spinner_text.xml" value="0.29635416666666664" />
       </map>
     </option>

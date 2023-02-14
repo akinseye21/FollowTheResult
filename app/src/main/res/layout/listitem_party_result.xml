@@ -1,30 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white">
 
     <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/image"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginLeft="20dp"
-        android:layout_centerVertical="true"/>
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic7"
+        app:civ_border_color="@color/defaultDark"
+        app:civ_border_width="0.1dp" />
 
     <TextView
+        android:id="@+id/party_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Votes for Party A"
-        android:textStyle="bold"
-        android:textColor="@color/white"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@+id/image"
         android:background="@drawable/normal_dark_corner"
         android:fontFamily="@font/montserratmedium"
-        android:layout_marginLeft="80dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
         android:paddingLeft="10dp"
+        android:paddingTop="5dp"
         android:paddingRight="10dp"
-        android:layout_centerVertical="true"/>
+        android:paddingBottom="5dp"
+        android:text="Votes for Party A"
+        android:textSize="8dp"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -32,24 +42,25 @@
         android:orientation="vertical"
         android:gravity="center"
         android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="20dp">
+        android:layout_alignParentRight="true">
         <EditText
             android:layout_width="150dp"
-            android:layout_height="40dp"
-            android:background="@null"
-            android:textColor="#000000"
+            android:layout_height="30dp"
+            android:background="@drawable/normal_white_corner"
+            android:textColor="@color/defaultDark"
             android:textSize="15dp"
+            android:id="@+id/edtnum"
             android:inputType="number"
-            android:layout_gravity="center"
             android:gravity="center"
             android:singleLine="true"
-            android:fontFamily="@font/montserratmedium"/>
+            android:fontFamily="@font/montserratbold"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Enter vote for party"
-            android:fontFamily="@font/montserratitalic"/>
+            android:textSize="8dp"
+            android:textColor="@color/defaultDark"
+            android:fontFamily="@font/montserratlight"/>
     </LinearLayout>
 
 </RelativeLayout>
