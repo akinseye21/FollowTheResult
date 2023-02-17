@@ -52,7 +52,8 @@ public class FragmentArrivalChecklist1 extends Fragment {
     Dialog myDialog, myDialog2;
     AppCompatButton next;
     public static final String GET_QUESTIONS = "https://readytoleadafrica.org/rtl_mobile/get_questions";
-    public static final String SUBMIT_ARRIVAL = "https://readytoleadafrica.org/rtl_mobile/arrival_checks";
+    public static final String SUBMIT_ARRIVAL_LGA = "https://readytoleadafrica.org/rtl_mobile/arrival_checks";
+    public static final String SUBMIT_ARRIVAL_STATE = "https://readytoleadafrica.org/rtl_mobile/arrival_checks_state";
 
     ArrayList<String> arr_id;
     ArrayList<String> arr_question;
@@ -300,7 +301,7 @@ public class FragmentArrivalChecklist1 extends Fragment {
                 @Override
                 public void onClick(View view) {
                     //send all captures to DB
-                    Toast.makeText(getContext(), "List = "+responses[0]+responses[1]+responses[2]+responses[3]+responses[4]+responses[5]+responses[6]+responses[7], Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getContext(), "List = "+responses[0]+responses[1]+responses[2]+responses[3]+responses[4]+responses[5]+responses[6]+responses[7], Toast.LENGTH_LONG).show();
                     System.out.println("List = "+responses[0]+responses[1]+responses[2]+responses[3]+responses[4]+responses[5]+responses[6]+responses[7]);
                 }
             });
@@ -609,79 +610,173 @@ public class FragmentArrivalChecklist1 extends Fragment {
                 myDialog.setCanceledOnTouchOutside(false);
                 myDialog.show();
 
-                //send the results to the DB
-                StringRequest stringRequest = new StringRequest(Request.Method.POST, SUBMIT_ARRIVAL,
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                try{
-                                    JSONObject jsonObject = new JSONObject(response);
-                                    String status = jsonObject.getString("status");
-                                    String notification = jsonObject.getString("notification");
+                if (usertype.equals("admin")){
+                    //send the result to the database using the API for state level
+                    StringRequest stringRequest2 = new StringRequest(Request.Method.POST, SUBMIT_ARRIVAL_LGA,
+                            new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    try{
+                                        JSONObject jsonObject = new JSONObject(response);
+                                        String status = jsonObject.getString("status");
+                                        String notification = jsonObject.getString("notification");
 
-                                    if (status.equals("successful")){
+                                        if (status.equals("successful")){
+                                            myDialog.dismiss();
+                                            myDialog2.dismiss();
+                                            Toast.makeText(getContext(), notification+" Arrival checklist", Toast.LENGTH_SHORT).show();
+                                            ((Dashboard)getActivity()).navigateFragment(0);
+                                            //go back to fragment checklist
+//                                        Intent i = new Intent(getContext(), Dashboard.class);
+//                                        i.putExtra("from", usertype);
+//                                        i.putExtra("state", got_state);
+//                                        startActivity(i);
+                                        }else{
+                                            myDialog.dismiss();
+                                            myDialog2.dismiss();
+                                            Toast.makeText(getContext(), "Sending Failed! please try again", Toast.LENGTH_SHORT).show();
+                                        }
+
+                                    }
+                                    catch (JSONException e){
+                                        e.printStackTrace();
                                         myDialog.dismiss();
-                                        Toast.makeText(getContext(), notification+" Arrival checklist", Toast.LENGTH_SHORT).show();
-                                        //go back to fragment checklist
-                                        Intent i = new Intent(getContext(), Dashboard.class);
-                                        startActivity(i);
-                                    }else{
-                                        myDialog.dismiss();
-                                        Toast.makeText(getContext(), "Sending Failed! please try again", Toast.LENGTH_SHORT).show();
+                                        myDialog2.dismiss();
+
+                                        Toast.makeText(getContext(), "You have submitted a response before... You can not submit again", Toast.LENGTH_LONG).show();
+                                        ((Dashboard)getActivity()).navigateFragment(0);
+//                                    Intent i = new Intent(getContext(), Dashboard.class);
+//                                    i.putExtra("from", usertype);
+//                                    i.putExtra("state", got_state);
+//                                    startActivity(i);
                                     }
 
                                 }
-                                catch (JSONException e){
-                                    e.printStackTrace();
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError volleyError) {
+
+                                    if(volleyError == null){
+                                        return;
+                                    }
                                     myDialog.dismiss();
-
-                                    Toast.makeText(getContext(), "You have submitted a response before... You can not submit again", Toast.LENGTH_LONG).show();
-                                    Intent i = new Intent(getContext(), Dashboard.class);
-                                    startActivity(i);
+                                    myDialog2.dismiss();
+                                    Toast.makeText(getContext(), "Error! Please check network connectivity and try again", Toast.LENGTH_SHORT).show();
                                 }
+                            }){
+                        @Override
+                        protected Map<String, String> getParams(){
+                            Map<String, String> params = new HashMap<>();
+                            params.put("dstate", got_state);
+                            params.put("user", got_email);
+                            params.put("observer_arrival", responses[0]);
+                            params.put("collation_arrival", responses[1]);
+                            params.put("obs_permit", responses[2]);
+                            params.put("sum_collation_officer", responses[3]);
+                            params.put("female_collation_officer", responses[4]);
+                            params.put("security", responses[5]);
+                            params.put("party_agents", responses[6]);
+                            params.put("pwd_access", responses[7]);
+                            return params;
+                        }
+                    };
 
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError volleyError) {
+                    RequestQueue requestQueue2 = Volley.newRequestQueue(getContext());
+                    DefaultRetryPolicy retryPolicy2 = new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                    stringRequest2.setRetryPolicy(retryPolicy2);
+                    requestQueue2.add(stringRequest2);
+                    requestQueue2.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
+                        @Override
+                        public void onRequestFinished(Request<Object> request) {
+                            requestQueue2.getCache().clear();
+                        }
+                    });
 
-                                if(volleyError == null){
-                                    return;
+                }else{
+                    //send the results to the DB using the API for LGA level
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST, SUBMIT_ARRIVAL_LGA,
+                            new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    try{
+                                        JSONObject jsonObject = new JSONObject(response);
+                                        String status = jsonObject.getString("status");
+                                        String notification = jsonObject.getString("notification");
+
+                                        if (status.equals("successful")){
+                                            myDialog.dismiss();
+                                            myDialog2.dismiss();
+                                            Toast.makeText(getContext(), notification+" Arrival checklist", Toast.LENGTH_SHORT).show();
+                                            ((Dashboard)getActivity()).navigateFragment(0);
+                                            //go back to fragment checklist
+//                                        Intent i = new Intent(getContext(), Dashboard.class);
+//                                        i.putExtra("from", usertype);
+//                                        i.putExtra("state", got_state);
+//                                        startActivity(i);
+                                        }else{
+                                            myDialog.dismiss();
+                                            myDialog2.dismiss();
+                                            Toast.makeText(getContext(), "Sending Failed! please try again", Toast.LENGTH_SHORT).show();
+                                        }
+
+                                    }
+                                    catch (JSONException e){
+                                        e.printStackTrace();
+                                        myDialog.dismiss();
+                                        myDialog2.dismiss();
+
+                                        Toast.makeText(getContext(), "You have submitted a response before... You can not submit again", Toast.LENGTH_LONG).show();
+                                        ((Dashboard)getActivity()).navigateFragment(0);
+//                                    Intent i = new Intent(getContext(), Dashboard.class);
+//                                    i.putExtra("from", usertype);
+//                                    i.putExtra("state", got_state);
+//                                    startActivity(i);
+                                    }
+
                                 }
-                                myDialog.dismiss();
-                                Toast.makeText(getContext(), "Error! Please check network connectivity and try again", Toast.LENGTH_SHORT).show();
-                            }
-                        }){
-                    @Override
-                    protected Map<String, String> getParams(){
-                        Map<String, String> params = new HashMap<>();
-                        params.put("lga", got_lga);
-                        params.put("dstate", got_state);
-                        params.put("user", got_email);
-                        params.put("observer_arrival", responses[0]);
-                        params.put("collation_arrival", responses[1]);
-                        params.put("obs_permit", responses[2]);
-                        params.put("sum_collation_officer", responses[3]);
-                        params.put("female_collation_officer", responses[4]);
-                        params.put("security", responses[5]);
-                        params.put("party_agents", responses[6]);
-                        params.put("pwd_access", responses[7]);
-                        return params;
-                    }
-                };
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError volleyError) {
 
-                RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-                DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-                stringRequest.setRetryPolicy(retryPolicy);
-                requestQueue.add(stringRequest);
-                requestQueue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
-                    @Override
-                    public void onRequestFinished(Request<Object> request) {
-                        requestQueue.getCache().clear();
-                    }
-                });
+                                    if(volleyError == null){
+                                        return;
+                                    }
+                                    myDialog.dismiss();
+                                    myDialog2.dismiss();
+                                    Toast.makeText(getContext(), "Error! Please check network connectivity and try again", Toast.LENGTH_SHORT).show();
+                                }
+                            }){
+                        @Override
+                        protected Map<String, String> getParams(){
+                            Map<String, String> params = new HashMap<>();
+                            params.put("lga", got_lga);
+                            params.put("dstate", got_state);
+                            params.put("user", got_email);
+                            params.put("observer_arrival", responses[0]);
+                            params.put("collation_arrival", responses[1]);
+                            params.put("obs_permit", responses[2]);
+                            params.put("sum_collation_officer", responses[3]);
+                            params.put("female_collation_officer", responses[4]);
+                            params.put("security", responses[5]);
+                            params.put("party_agents", responses[6]);
+                            params.put("pwd_access", responses[7]);
+                            return params;
+                        }
+                    };
 
+                    RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+                    DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                    stringRequest.setRetryPolicy(retryPolicy);
+                    requestQueue.add(stringRequest);
+                    requestQueue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
+                        @Override
+                        public void onRequestFinished(Request<Object> request) {
+                            requestQueue.getCache().clear();
+                        }
+                    });
+                }
 
 
                 //clear the array

@@ -3,15 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.179" />
         <entry key="app/src/main/res/drawable/blue_bottom.xml" value="0.158" />
         <entry key="app/src/main/res/drawable/blue_up.xml" value="0.158" />
         <entry key="app/src/main/res/drawable/dark_circle.xml" value="0.158" />
         <entry key="app/src/main/res/drawable/dark_corner1.xml" value="0.158" />
         <entry key="app/src/main/res/drawable/dark_corner2.xml" value="0.158" />
         <entry key="app/src/main/res/drawable/edt_login.xml" value="0.158" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.179" />
         <entry key="app/src/main/res/drawable/normal_dark_corner.xml" value="0.158" />
         <entry key="app/src/main/res/drawable/normal_red_corner.xml" value="0.181" />
         <entry key="app/src/main/res/drawable/normal_white_corner.xml" value="0.158" />
+        <entry key="app/src/main/res/drawable/normal_yellow_corner.xml" value="0.179" />
         <entry key="app/src/main/res/drawable/rounded_red.xml" value="0.158" />
         <entry key="app/src/main/res/drawable/white_bottom.xml" value="0.158" />
         <entry key="app/src/main/res/drawable/white_corner1.xml" value="0.158" />
@@ -24,11 +27,13 @@
         <entry key="app/src/main/res/layout/activity_enter_code.xml" value="0.2828125" />
         <entry key="app/src/main/res/layout/activity_enter_code_forget_password.xml" value="0.21240942028985507" />
         <entry key="app/src/main/res/layout/activity_login_page.xml" value="0.19610507246376813" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.165" />
         <entry key="app/src/main/res/layout/activity_process_checklist.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_reeset_password.xml" value="0.21240942028985507" />
         <entry key="app/src/main/res/layout/activity_registration.xml" value="0.27414330218068533" />
         <entry key="app/src/main/res/layout/custom_popup_loading.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/custom_popup_prompt.xml" value="0.21331521739130435" />
+        <entry key="app/src/main/res/layout/custom_popup_upload.xml" value="0.21331521739130435" />
         <entry key="app/src/main/res/layout/custom_popup_validate.xml" value="0.29635416666666664" />
         <entry key="app/src/main/res/layout/fragment_arrival_checklist1.xml" value="0.26575342465753427" />
         <entry key="app/src/main/res/layout/fragment_arrival_checklist2.xml" value="0.19610507246376813" />
@@ -42,9 +47,11 @@
         <entry key="app/src/main/res/layout/fragment_result.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/fragment_result_state.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_result_verification.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_upload_picture.xml" value="0.21331521739130435" />
         <entry key="app/src/main/res/layout/fragment_user_profile.xml" value="0.25" />
         <entry key="app/src/main/res/layout/list_arrival_result.xml" value="0.29635416666666664" />
         <entry key="app/src/main/res/layout/list_lga.xml" value="0.21240942028985507" />
+        <entry key="app/src/main/res/layout/list_phonecall.xml" value="0.21331521739130435" />
         <entry key="app/src/main/res/layout/listitem_party_result.xml" value="0.25" />
         <entry key="app/src/main/res/layout/simple_spinner_text.xml" value="0.29635416666666664" />
       </map>

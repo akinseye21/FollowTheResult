@@ -12,6 +12,23 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class FragmentContactCenter extends Fragment {
 
@@ -19,7 +36,13 @@ public class FragmentContactCenter extends Fragment {
     SharedPreferences preferences, preferences2;
     LinearLayout lin_lga, lin_lgacount;
     TextView lgaCount;
+    TextView phone1, phone2, phone3;
 
+    ArrayList<String> arr_phone1 = new ArrayList<>();
+    ArrayList<String> arr_phone2 = new ArrayList<>();
+    ArrayList<String> arr_phone3 = new ArrayList<>();
+
+    public static final String GET_NUM = "https://readytoleadafrica.org/rtl_mobile/get_call_center";
 
     public FragmentContactCenter() {
         // Required empty public constructor
@@ -48,6 +71,9 @@ public class FragmentContactCenter extends Fragment {
         lin_lga = v.findViewById(R.id.lin_lga);
         lin_lgacount = v.findViewById(R.id.lin_lgacount);
         lgaCount = v.findViewById(R.id.lga_count);
+        phone1 = v.findViewById(R.id.phone1);
+        phone2 = v.findViewById(R.id.phone2);
+        phone3 = v.findViewById(R.id.phone3);
 
         fullname.setText(got_fullname);
         state.setText(got_state);
@@ -59,6 +85,67 @@ public class FragmentContactCenter extends Fragment {
         }else{
             lin_lgacount.setVisibility(View.GONE);
         }
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, GET_NUM,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        try{
+                            JSONArray jsonArray = new JSONArray(response);
+                            for(int w=0; w<=jsonArray.length()-1; w++){
+                                JSONObject jsonObject = jsonArray.getJSONObject(w);
+                                String name = jsonObject.getString("name");
+                                if (name.equals(got_state.toUpperCase())){
+                                    String phone_1 = jsonObject.getString("phone1");
+                                    String phone_2 = jsonObject.getString("phone2");
+                                    String phone_3 = jsonObject.getString("phone3");
+
+                                    phone1.setText(phone_1);
+                                    phone2.setText(phone_2);
+                                    phone3.setText(phone_3);
+                                }
+                                else{
+                                    phone1.setText("xxxxx");
+                                    phone2.setText("xxxxx");
+                                    phone3.setText("xxxxx");
+                                }
+                            }
+
+                        }
+                        catch (JSONException e){
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+
+                        if(volleyError == null){
+                            return;
+                        }
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams(){
+                Map<String, String> params = new HashMap<>();
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        stringRequest.setRetryPolicy(retryPolicy);
+        requestQueue.add(stringRequest);
+        requestQueue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
+            @Override
+            public void onRequestFinished(Request<Object> request) {
+                requestQueue.getCache().clear();
+            }
+        });
+
 
         return v;
     }

@@ -73,7 +73,7 @@ public class FragmentProcessChecklist extends Fragment {
     String got_email;
     LinearLayout lin_lga, lin_lgacount;
     TextView lgaCount;
-
+    String usertype;
 
     public FragmentProcessChecklist() {
         // Required empty public constructor
@@ -92,7 +92,7 @@ public class FragmentProcessChecklist extends Fragment {
         got_state = preferences.getString("state", "not available");
         got_lga = preferences.getString("lga", "not available");
         got_email = preferences.getString("email", "not available");
-        final String usertype = preferences.getString("usertype", "");
+        usertype = preferences.getString("usertype", "");
 
         preferences2 = getActivity().getSharedPreferences("lga_count", Context.MODE_PRIVATE);
         final String lga_count = preferences2.getString("lgacount", "1");
@@ -331,78 +331,160 @@ public class FragmentProcessChecklist extends Fragment {
                 myDialog.setCanceledOnTouchOutside(false);
                 myDialog.show();
 
-                //send the results to the DB
-                StringRequest stringRequest = new StringRequest(Request.Method.POST, SUBMIT_PROCESS,
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                try{
-                                    JSONObject jsonObject = new JSONObject(response);
-                                    String status = jsonObject.getString("status");
-                                    String notification = jsonObject.getString("notification");
+                if(usertype.equals("admin")){
+                    //send the results to the DB
+                    StringRequest stringRequest2 = new StringRequest(Request.Method.POST, SUBMIT_PROCESS,
+                            new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    try{
+                                        JSONObject jsonObject = new JSONObject(response);
+                                        String status = jsonObject.getString("status");
+                                        String notification = jsonObject.getString("notification");
 
-                                    if (status.equals("successful")){
+                                        if (status.equals("successful")){
+                                            myDialog.dismiss();
+                                            myDialog2.dismiss();
+                                            Toast.makeText(getContext(), notification+" Process checklist", Toast.LENGTH_SHORT).show();
+                                            ((Dashboard)getActivity()).navigateFragment(0);
+                                            //go back to fragment checklist
+//                                            Intent i = new Intent(getContext(), Dashboard.class);
+//                                            startActivity(i);
+                                        }else{
+                                            myDialog.dismiss();
+                                            myDialog2.dismiss();
+                                            Toast.makeText(getContext(), "Sending Failed! please try again", Toast.LENGTH_SHORT).show();
+                                        }
+
+                                    }
+                                    catch (JSONException e){
+                                        e.printStackTrace();
                                         myDialog.dismiss();
-                                        Toast.makeText(getContext(), notification+" Process checklist", Toast.LENGTH_SHORT).show();
-                                        //go back to fragment checklist
-                                        Intent i = new Intent(getContext(), Dashboard.class);
-                                        startActivity(i);
-                                    }else{
-                                        myDialog.dismiss();
-                                        Toast.makeText(getContext(), "Sending Failed! please try again", Toast.LENGTH_SHORT).show();
+                                        myDialog2.dismiss();
+                                        Toast.makeText(getContext(), "You have submitted a response before... You can not submit again", Toast.LENGTH_LONG).show();
+                                        ((Dashboard)getActivity()).navigateFragment(0);
                                     }
 
                                 }
-                                catch (JSONException e){
-                                    e.printStackTrace();
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError volleyError) {
+
+                                    if(volleyError == null){
+                                        return;
+                                    }
                                     myDialog.dismiss();
-                                    Toast.makeText(getContext(), "You have submitted a response before... You can not submit again", Toast.LENGTH_LONG).show();
-                                    Intent i = new Intent(getContext(), Dashboard.class);
-                                    startActivity(i);
+                                    myDialog2.dismiss();
+                                    Toast.makeText(getContext(), "Error! Please check network connectivity and try again", Toast.LENGTH_SHORT).show();
                                 }
+                            }){
+                        @Override
+                        protected Map<String, String> getParams(){
+                            Map<String, String> params = new HashMap<>();
+                            params.put("dstate", got_state);
+                            params.put("user", got_email);
+                            params.put("q1", responses[0]);
+                            params.put("q2", responses[1]);
+                            params.put("q3", responses[2]);
+                            params.put("q4", responses[3]);
+                            params.put("q5", responses[4]);
+                            params.put("q6", responses[5]);
+                            params.put("q7", responses[6]);
+                            params.put("q8", responses[7]);
+                            params.put("q9", responses[8]);
+                            return params;
+                        }
+                    };
 
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError volleyError) {
+                    RequestQueue requestQueue2 = Volley.newRequestQueue(getContext());
+                    DefaultRetryPolicy retryPolicy2 = new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                    stringRequest2.setRetryPolicy(retryPolicy2);
+                    requestQueue2.add(stringRequest2);
+                    requestQueue2.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
+                        @Override
+                        public void onRequestFinished(Request<Object> request) {
+                            requestQueue2.getCache().clear();
+                        }
+                    });
+                }else{
+                    //send the results to the DB
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST, SUBMIT_PROCESS,
+                            new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    try{
+                                        JSONObject jsonObject = new JSONObject(response);
+                                        String status = jsonObject.getString("status");
+                                        String notification = jsonObject.getString("notification");
 
-                                if(volleyError == null){
-                                    return;
+                                        if (status.equals("successful")){
+                                            myDialog.dismiss();
+                                            myDialog2.dismiss();
+                                            Toast.makeText(getContext(), notification+" Process checklist", Toast.LENGTH_SHORT).show();
+                                            ((Dashboard)getActivity()).navigateFragment(0);
+                                            //go back to fragment checklist
+//                                            Intent i = new Intent(getContext(), Dashboard.class);
+//                                            startActivity(i);
+                                        }else{
+                                            myDialog.dismiss();
+                                            myDialog2.dismiss();
+                                            Toast.makeText(getContext(), "Sending Failed! please try again", Toast.LENGTH_SHORT).show();
+                                        }
+
+                                    }
+                                    catch (JSONException e){
+                                        e.printStackTrace();
+                                        myDialog.dismiss();
+                                        myDialog2.dismiss();
+                                        Toast.makeText(getContext(), "You have submitted a response before... You can not submit again", Toast.LENGTH_LONG).show();
+                                        ((Dashboard)getActivity()).navigateFragment(0);
+                                    }
+
                                 }
-                                myDialog.dismiss();
-                                Toast.makeText(getContext(), "Error! Please check network connectivity and try again", Toast.LENGTH_SHORT).show();
-                            }
-                        }){
-                    @Override
-                    protected Map<String, String> getParams(){
-                        Map<String, String> params = new HashMap<>();
-                        params.put("lga", got_lga);
-                        params.put("dstate", got_state);
-                        params.put("user", got_email);
-                        params.put("q1", responses[0]);
-                        params.put("q2", responses[1]);
-                        params.put("q3", responses[2]);
-                        params.put("q4", responses[3]);
-                        params.put("q5", responses[4]);
-                        params.put("q6", responses[5]);
-                        params.put("q7", responses[6]);
-                        params.put("q8", responses[7]);
-                        params.put("q9", responses[8]);
-                        return params;
-                    }
-                };
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError volleyError) {
 
-                RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-                DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-                stringRequest.setRetryPolicy(retryPolicy);
-                requestQueue.add(stringRequest);
-                requestQueue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
-                    @Override
-                    public void onRequestFinished(Request<Object> request) {
-                        requestQueue.getCache().clear();
-                    }
-                });
+                                    if(volleyError == null){
+                                        return;
+                                    }
+                                    myDialog.dismiss();
+                                    myDialog2.dismiss();
+                                    Toast.makeText(getContext(), "Error! Please check network connectivity and try again", Toast.LENGTH_SHORT).show();
+                                }
+                            }){
+                        @Override
+                        protected Map<String, String> getParams(){
+                            Map<String, String> params = new HashMap<>();
+                            params.put("lga", got_lga);
+                            params.put("dstate", got_state);
+                            params.put("user", got_email);
+                            params.put("q1", responses[0]);
+                            params.put("q2", responses[1]);
+                            params.put("q3", responses[2]);
+                            params.put("q4", responses[3]);
+                            params.put("q5", responses[4]);
+                            params.put("q6", responses[5]);
+                            params.put("q7", responses[6]);
+                            params.put("q8", responses[7]);
+                            params.put("q9", responses[8]);
+                            return params;
+                        }
+                    };
+
+                    RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+                    DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                    stringRequest.setRetryPolicy(retryPolicy);
+                    requestQueue.add(stringRequest);
+                    requestQueue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
+                        @Override
+                        public void onRequestFinished(Request<Object> request) {
+                            requestQueue.getCache().clear();
+                        }
+                    });
+                }
 
 
                 //clear the array

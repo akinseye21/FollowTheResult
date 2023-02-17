@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -43,10 +44,11 @@ public class FragmentResultState extends Fragment {
     SharedPreferences preferences, preferences2;
     String usertype;
     LinearLayout lin_lga, lin_lgacount;
-    Dialog myDialog;
+    Dialog myDialog, myDialog1;
     ArrayList<String> party_name = new ArrayList<>();
     ArrayList<String> party_logo = new ArrayList<>();
     TextView lgaCount;
+    AppCompatButton submit;
 
     CircleImageView img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12, img13, img14, img15, img16, img17, img18;
     TextView pname1, pname2, pname3, pname4, pname5, pname6, pname7, pname8, pname9, pname10, pname11, pname12, pname13, pname14, pname15, pname16, pname17, pname18;
@@ -55,10 +57,17 @@ public class FragmentResultState extends Fragment {
     String count_A, count_AA, count_AAC, count_ADC, count_ADP;
     String count_APC, count_APGA, count_APM, count_APP, count_BP;
     String count_LP, count_NNPP, count_NRM, count_PDP, count_PRP;
-    String count_SDP, count_YPP, count_ZLP;
+    String count_SDP, count_YPP, count_ZLP, status;
+
+    String got_email;
+
+
+    EditText num1, num2, num3, num4, num5, num6, num7, num8, num9, num10, num11, num12, num13, num14, num15, num16, num17, num18;
 
     public static final String GET_PARTY = "https://readytoleadafrica.org/rtl_mobile/getallparties";
     public static final String GET_ALL_LGA_RESULT = "https://readytoleadafrica.org/rtl_mobile/getlgaresults";
+    public static final String APPROVE = "https://readytoleadafrica.org/rtl_mobile/approve_lga_result";
+    public static final String APPROVED = "https://readytoleadafrica.org/rtl_mobile/approved_lga_result";
 
     public FragmentResultState() {
         // Required empty public constructor
@@ -72,11 +81,15 @@ public class FragmentResultState extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_result_state, container, false);
 
+
         preferences = getActivity().getSharedPreferences("LoginDetails", Context.MODE_PRIVATE);
         final String got_fullname = preferences.getString("fullname", "not available");
         final String got_state = preferences.getString("state", "not available");
         final String got_lga = preferences.getString("lga", "not available");
         usertype = preferences.getString("usertype", "");
+        got_email = preferences.getString("email", "not available");
+
+        Bundle args2 = getArguments();
 
         preferences2 = getActivity().getSharedPreferences("lga_count", Context.MODE_PRIVATE);
         final String lga_count = preferences2.getString("lgacount", "1");
@@ -88,6 +101,7 @@ public class FragmentResultState extends Fragment {
         lin_lgacount = v.findViewById(R.id.lin_lgacount);
         lgaName = v.findViewById(R.id.lgaName);
         lgaCount = v.findViewById(R.id.lga_count);
+        submit = v.findViewById(R.id.submit);
 
         img1 = v.findViewById(R.id.image1);
         img2 = v.findViewById(R.id.image2);
@@ -148,6 +162,26 @@ public class FragmentResultState extends Fragment {
         count17 = v.findViewById(R.id.count17);
         count18 = v.findViewById(R.id.count18);
 
+
+        num1 = v.findViewById(R.id.edtnum1);
+        num2 = v.findViewById(R.id.edtnum2);
+        num3 = v.findViewById(R.id.edtnum3);
+        num4 = v.findViewById(R.id.edtnum4);
+        num5 = v.findViewById(R.id.edtnum5);
+        num6 = v.findViewById(R.id.edtnum6);
+        num7 = v.findViewById(R.id.edtnum7);
+        num8 = v.findViewById(R.id.edtnum8);
+        num9 = v.findViewById(R.id.edtnum9);
+        num10 = v.findViewById(R.id.edtnum10);
+        num11 = v.findViewById(R.id.edtnum11);
+        num12 = v.findViewById(R.id.edtnum12);
+        num13 = v.findViewById(R.id.edtnum13);
+        num14 = v.findViewById(R.id.edtnum14);
+        num15 = v.findViewById(R.id.edtnum15);
+        num16 = v.findViewById(R.id.edtnum16);
+        num17 = v.findViewById(R.id.edtnum17);
+        num18 = v.findViewById(R.id.edtnum18);
+
         fullname.setText(got_fullname);
         state.setText(got_state);
         lga.setText(got_lga);
@@ -158,6 +192,173 @@ public class FragmentResultState extends Fragment {
         }else{
             lin_lgacount.setVisibility(View.GONE);
         }
+
+
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(num1.getText().toString().equals("") && num2.getText().toString().equals("") && num3.getText().toString().equals("") && num4.getText().toString().equals("") &&
+                        num5.getText().toString().equals("") && num6.getText().toString().equals("") && num7.getText().toString().equals("") && num8.getText().toString().equals("") &&
+                        num9.getText().toString().equals("") && num10.getText().toString().equals("") && num11.getText().toString().equals("") && num12.getText().toString().equals("") &&
+                        num13.getText().toString().equals("") && num14.getText().toString().equals("") && num15.getText().toString().equals("") && num16.getText().toString().equals("") &&
+                        num17.getText().toString().equals("") && num18.getText().toString().equals("")){
+
+                    //show Dialog that is loading the information
+                    myDialog1 = new Dialog(getContext());
+                    myDialog1.setContentView(R.layout.custom_popup_loading);
+                    TextView text = myDialog1.findViewById(R.id.text);
+                    text.setText("Verifying "+args2.getString("lga")+" results... Please wait");
+                    myDialog1.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    myDialog1.setCanceledOnTouchOutside(false);
+                    myDialog1.show();
+
+                    //get all the result from the LGA and send
+                    StringRequest stringRequest3 = new StringRequest(Request.Method.POST, APPROVE,
+                            new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    if (response.equals("success")){
+                                        myDialog1.dismiss();
+                                        Toast.makeText(getContext(), "Verification Successful", Toast.LENGTH_SHORT).show();
+                                        ((Dashboard)getActivity()).navigateFragment(0);
+                                    }else{
+                                        myDialog1.dismiss();
+                                        Toast.makeText(getContext(), "Verification Failed", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError volleyError) {
+
+                                    if(volleyError == null){
+                                        return;
+                                    }
+                                    myDialog1.dismiss();
+                                    Toast.makeText(getContext(), "Error, Check internet connectivity and try again", Toast.LENGTH_SHORT).show();
+
+                                }
+                            }){
+                        @Override
+                        protected Map<String, String> getParams(){
+                            Map<String, String> params = new HashMap<>();
+                            params.put("lga", args2.getString("lga"));
+                            params.put("dstate", args2.getString("state"));
+                            params.put("user", got_email);
+                            params.put("a", count1.getText().toString());
+                            params.put("aa", count2.getText().toString());
+                            params.put("aac", count3.getText().toString());
+                            params.put("adc", count4.getText().toString());
+                            params.put("adp", count5.getText().toString());
+                            params.put("apc", count6.getText().toString());
+                            params.put("apga", count7.getText().toString());
+                            params.put("apm", count8.getText().toString());
+                            params.put("app", count9.getText().toString());
+                            params.put("bp", count10.getText().toString());
+                            params.put("lp", count11.getText().toString());
+                            params.put("nnpp", count12.getText().toString());
+                            params.put("nrm", count13.getText().toString());
+                            params.put("pdp", count14.getText().toString());
+                            params.put("prp", count15.getText().toString());
+                            params.put("sdp", count16.getText().toString());
+                            params.put("ypp", count17.getText().toString());
+                            params.put("zlp", count18.getText().toString());
+                            return params;
+                        }
+                    };
+
+                    RequestQueue requestQueue3 = Volley.newRequestQueue(getContext());
+                    DefaultRetryPolicy retryPolicy3 = new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                    stringRequest3.setRetryPolicy(retryPolicy3);
+                    requestQueue3.add(stringRequest3);
+                    requestQueue3.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
+                        @Override
+                        public void onRequestFinished(Request<Object> request) {
+                            requestQueue3.getCache().clear();
+                        }
+                    });
+
+
+                }
+                else{
+                    //get the inputs and send
+                    //show Dialog that is loading the information
+                    myDialog1 = new Dialog(getContext());
+                    myDialog1.setContentView(R.layout.custom_popup_loading);
+                    TextView text = myDialog1.findViewById(R.id.text);
+                    text.setText("Verifying "+args2.getString("lga")+" results... Please wait");
+                    myDialog1.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    myDialog1.setCanceledOnTouchOutside(false);
+                    myDialog1.show();
+
+                    //get all the result from the LGA and send
+                    StringRequest stringRequest1 = new StringRequest(Request.Method.POST, APPROVED,
+                            new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    if (response.equals("success")){
+                                        myDialog1.dismiss();
+                                        Toast.makeText(getContext(), "Verification Successful", Toast.LENGTH_SHORT).show();
+                                        ((Dashboard)getActivity()).navigateFragment(1);
+                                    }else{
+                                        myDialog1.dismiss();
+                                        Toast.makeText(getContext(), "Verification Failed", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError volleyError) {
+
+                                    if(volleyError == null){
+                                        return;
+                                    }
+                                    myDialog1.dismiss();
+                                    Toast.makeText(getContext(), "Error, Check internet connectivity and try again", Toast.LENGTH_SHORT).show();
+
+                                }
+                            }){
+                        @Override
+                        protected Map<String, String> getParams(){
+                            Map<String, String> params = new HashMap<>();
+                            params.put("lga", args2.getString("lga"));
+                            params.put("dstate", args2.getString("state"));
+                            params.put("user", got_email);
+                            params.put("a", num1.getText().toString());
+                            params.put("aa", num2.getText().toString());
+                            params.put("aac", num3.getText().toString());
+                            params.put("adc", num4.getText().toString());
+                            params.put("adp", num5.getText().toString());
+                            params.put("apc", num6.getText().toString());
+                            params.put("apga", num7.getText().toString());
+                            params.put("apm", num8.getText().toString());
+                            params.put("app", num9.getText().toString());
+                            params.put("bp", num10.getText().toString());
+                            params.put("lp", num11.getText().toString());
+                            params.put("nnpp", num12.getText().toString());
+                            params.put("nrm", num13.getText().toString());
+                            params.put("pdp", num14.getText().toString());
+                            params.put("prp", num15.getText().toString());
+                            params.put("sdp", num16.getText().toString());
+                            params.put("ypp", num17.getText().toString());
+                            params.put("zlp", num18.getText().toString());
+                            return params;
+                        }
+                    };
+
+                    RequestQueue requestQueue1 = Volley.newRequestQueue(getContext());
+                    DefaultRetryPolicy retryPolicy1 = new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                    stringRequest1.setRetryPolicy(retryPolicy1);
+                    requestQueue1.add(stringRequest1);
+                    requestQueue1.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
+                        @Override
+                        public void onRequestFinished(Request<Object> request) {
+                            requestQueue1.getCache().clear();
+                        }
+                    });
+                }
+            }
+        });
 
         return v;
     }
@@ -304,6 +505,7 @@ public class FragmentResultState extends Fragment {
                                         count_SDP = jsonObject.getString("SDP");
                                         count_YPP = jsonObject.getString("YPP");
                                         count_ZLP = jsonObject.getString("ZLP");
+                                        status = jsonObject.getString("status");
 
                                         count1.setText(count_A);
                                         count2.setText(count_AA);

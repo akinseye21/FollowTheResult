@@ -230,7 +230,7 @@ FragmentUserProfile.OnFragmentInteractionListener{
         tabLayout.getTabAt(0).setIcon(R.drawable.ic15);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic16);
         tabLayout.getTabAt(2).setIcon(R.drawable.ic17);
-        tabLayout.getTabAt(3).setIcon(R.drawable.ic16);
+        tabLayout.getTabAt(3).setIcon(R.drawable.ic22);
         tabLayout.getTabAt(4).setIcon(R.drawable.ic18);
     }
 
