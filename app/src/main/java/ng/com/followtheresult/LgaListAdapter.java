@@ -76,13 +76,13 @@ public class LgaListAdapter extends BaseAdapter {
 
         if (status.get(position).equals("0")){
             mark.setImageResource(R.drawable.question);
-            mark.setImageTintMode(PorterDuff.Mode.MULTIPLY);
-            mark.setColorFilter(ContextCompat.getColor(context, R.color.gray), android.graphics.PorterDuff.Mode.MULTIPLY);
+//            mark.setImageTintMode(PorterDuff.Mode.MULTIPLY);
+//            mark.setColorFilter(ContextCompat.getColor(context, R.color.gray), android.graphics.PorterDuff.Mode.MULTIPLY);
         }
-        if (status.get(position).equals("2")){
+        else if (status.get(position).equals("2")){
             mark.setImageResource(R.drawable.check);
         }
-        if (status.get(position).equals("1")){
+        else if (status.get(position).equals("1")){
             mark.setImageResource(R.drawable.xmark);
         }
 

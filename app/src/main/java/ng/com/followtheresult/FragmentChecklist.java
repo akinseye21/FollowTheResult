@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class FragmentChecklist extends Fragment {
@@ -24,6 +25,7 @@ public class FragmentChecklist extends Fragment {
     SharedPreferences preferences, preferences2;
     LinearLayout lin_lga, lin_lgacount;
     TextView lgaCount;
+    String arrival_check, process_check, result_check;
 
     public FragmentChecklist() {
         // Required empty public constructor
@@ -42,9 +44,12 @@ public class FragmentChecklist extends Fragment {
         final String got_state = preferences.getString("state", "not available");
         final String got_lga = preferences.getString("lga", "not available");
         final String usertype = preferences.getString("usertype", "");
+        arrival_check = preferences.getString("arrival_check", "not available");
+        process_check = preferences.getString("process_check", "not available");
+        result_check = preferences.getString("result_submit", "not available");
 
         preferences2 = getActivity().getSharedPreferences("lga_count", Context.MODE_PRIVATE);
-        final String lga_count = preferences2.getString("lgacount", "1");
+        final String lga_count = preferences2.getString("lgacount", "");
 
         fullname = v.findViewById(R.id.fullname);
         state = v.findViewById(R.id.state);
@@ -86,13 +91,16 @@ public class FragmentChecklist extends Fragment {
         processChecklist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentManager fm = getFragmentManager();
-                FragmentProcessChecklist fragmentProcessChecklist = new FragmentProcessChecklist();
-                FragmentTransaction transaction = fm.beginTransaction();
-                fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                transaction.replace(R.id.fragmentChecklist, fragmentProcessChecklist).addToBackStack(null);
-                transaction.commit();
-
+                if(arrival_check.equals("0")){
+                    Toast.makeText(getContext(), "Sorry!! Please fill out the arrival checklist before proceeding", Toast.LENGTH_SHORT).show();
+                }else{
+                    FragmentManager fm = getFragmentManager();
+                    FragmentProcessChecklist fragmentProcessChecklist = new FragmentProcessChecklist();
+                    FragmentTransaction transaction = fm.beginTransaction();
+                    fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                    transaction.replace(R.id.fragmentChecklist, fragmentProcessChecklist).addToBackStack(null);
+                    transaction.commit();
+                }
             }
         });
 
@@ -100,12 +108,16 @@ public class FragmentChecklist extends Fragment {
         resultsChecklist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentManager fm = getFragmentManager();
-                FragmentResult fragmentResult = new FragmentResult();
-                FragmentTransaction transaction = fm.beginTransaction();
-                fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                transaction.replace(R.id.fragmentChecklist, fragmentResult).addToBackStack(null);
-                transaction.commit();
+                if(process_check.equals("0")){
+                    Toast.makeText(getContext(), "Sorry!! Please complete the process checklist before proceeding", Toast.LENGTH_SHORT).show();
+                }else{
+                    FragmentManager fm = getFragmentManager();
+                    FragmentResult fragmentResult = new FragmentResult();
+                    FragmentTransaction transaction = fm.beginTransaction();
+                    fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                    transaction.replace(R.id.fragmentChecklist, fragmentResult).addToBackStack(null);
+                    transaction.commit();
+                }
             }
         });
 

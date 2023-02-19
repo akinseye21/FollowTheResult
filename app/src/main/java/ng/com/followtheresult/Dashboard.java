@@ -1,16 +1,23 @@
 package ng.com.followtheresult;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,9 +50,8 @@ FragmentUserProfile.OnFragmentInteractionListener{
     TextView pageTitle;
     String usertype;
     String state;
+    String sent_from;
     SharedPreferences sharedPreferences;
-
-    public static final String GET_ALL_LGA_RESULT = "https://readytoleadafrica.org/rtl_mobile/getlgaresults";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,61 +62,6 @@ FragmentUserProfile.OnFragmentInteractionListener{
         Intent i = getIntent();
         usertype = i.getStringExtra("from");
         state = i.getStringExtra("state");
-
-        sharedPreferences = getSharedPreferences("lga_count", this.MODE_PRIVATE);
-        SharedPreferences.Editor myEdit = sharedPreferences.edit();
-
-        //get the count of state
-        StringRequest stringRequest2 = new StringRequest(Request.Method.POST, GET_ALL_LGA_RESULT,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-
-                        try{
-                            JSONArray jsonArray = new JSONArray(response);
-                            int numOfLga = jsonArray.length();
-                            myEdit.putString( "lgacount", String.valueOf(numOfLga));
-                            myEdit.commit();
-                        }
-                        catch (JSONException e){
-                            e.printStackTrace();
-                        }
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
-
-                        if(volleyError == null){
-                            return;
-                        }
-                    }
-                }){
-            @Override
-            protected Map<String, String> getParams(){
-                Map<String, String> params = new HashMap<>();
-                params.put("dstate", state);
-                return params;
-            }
-        };
-
-        RequestQueue requestQueue2 = Volley.newRequestQueue(getApplicationContext());
-        DefaultRetryPolicy retryPolicy2 = new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        stringRequest2.setRetryPolicy(retryPolicy2);
-        requestQueue2.add(stringRequest2);
-        requestQueue2.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
-            @Override
-            public void onRequestFinished(Request<Object> request) {
-                requestQueue2.getCache().clear();
-            }
-        });
-
-
-
-
-
-
 
 
         pageTitle = findViewById(R.id.pageTitle);
@@ -286,5 +237,36 @@ FragmentUserProfile.OnFragmentInteractionListener{
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Dialog myDialogFinish = new Dialog(getApplicationContext());
+        myDialogFinish.setContentView(R.layout.custom_popup_prompt);
+        TextView text = myDialogFinish.findViewById(R.id.text);
+        text.setText("Do you want to logout of the application?");
+        AppCompatButton proceed = myDialogFinish.findViewById(R.id.proceed);
+        AppCompatButton close = myDialogFinish.findViewById(R.id.close);
+        proceed.setText("YES");
+        close.setText("NO");
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                myDialogFinish.dismiss();
+            }
+        });
+        proceed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences preferences = getSharedPreferences("LoginDetails", Context.MODE_PRIVATE);
+                preferences.edit().clear().commit();
+
+                Intent i = new Intent(getApplicationContext(), LoginPage.class);
+                startActivity(i);
+            }
+        });
+        myDialogFinish.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        myDialogFinish.setCanceledOnTouchOutside(false);
+        myDialogFinish.show();
     }
 }

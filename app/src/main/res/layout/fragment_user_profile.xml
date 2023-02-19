@@ -180,7 +180,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Today at 23:00 GMT"
+                                android:text="Today"
                                 android:textSize="12dp"
                                 android:textColor="@color/defaultDark"
                                 android:fontFamily="@font/montserratitalic"/>
@@ -200,7 +200,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Results Checklist"
+                                android:text="Checklist"
                                 android:textSize="12dp"
                                 android:textColor="@color/defaultDark"
                                 android:fontFamily="@font/montserratitalic"/>
@@ -209,6 +209,20 @@
                     </LinearLayout>
 
                 </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/rounded_red"
+                    android:id="@+id/signout"
+                    android:text="Signout"
+                    android:textStyle="bold"
+                    android:textAllCaps="false"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:fontFamily="@font/montserratmedium"
+                    android:textColor="@color/white"
+                    android:layout_marginTop="40dp"/>
 
 
             </LinearLayout>

@@ -25,6 +25,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -38,7 +39,8 @@ public class LoginPage extends AppCompatActivity {
     String gotten_email, gotten_password;
     EditText email, password;
     public static final String LOGIN = "https://readytoleadafrica.org/rtl_mobile/login";
-    SharedPreferences preferences;
+    public static final String GET_ALL_LGA_RESULT = "https://readytoleadafrica.org/rtl_mobile/getlgaresults";
+    SharedPreferences preferences, preferences2;
     TextView forgotPassword;
 
     @Override
@@ -49,6 +51,9 @@ public class LoginPage extends AppCompatActivity {
 
         preferences = getSharedPreferences("LoginDetails", Context.MODE_PRIVATE);
         final SharedPreferences.Editor myEdit = preferences.edit();
+
+        preferences2 = getSharedPreferences("lga_count", Context.MODE_PRIVATE);
+        final SharedPreferences.Editor myEdit2 = preferences2.edit();
 
         forgotPassword = findViewById(R.id.forgot_password);
         email = findViewById(R.id.edtemail);
@@ -101,41 +106,96 @@ public class LoginPage extends AppCompatActivity {
 
 
                                     if(status.equals("login successful")){
-                                        myDialog.dismiss();
-                                        Toast.makeText(LoginPage.this, status, Toast.LENGTH_SHORT).show();
 
-                                        //create shared preference for login
-                                        myEdit.putString( "email", email);
-                                        myEdit.putString("fullname", fullname);
-                                        myEdit.putString("state", state);
-                                        myEdit.putString("lga", lga);
-                                        myEdit.putString("usertype", userType);
-                                        myEdit.putString("arrival_check", arrival_check);
-                                        myEdit.putString("process_check", process_check);
-                                        myEdit.putString("result_submit", result_submit);
-                                        myEdit.commit();
+                                        //get the count of state
+                                        StringRequest stringRequest2 = new StringRequest(Request.Method.POST, GET_ALL_LGA_RESULT,
+                                                new Response.Listener<String>() {
+                                                    @Override
+                                                    public void onResponse(String response) {
 
-                                        if (userType.equals("admin")){
-                                            //go to state level view
-                                            //move to dashboard
-                                            Intent i = new Intent(LoginPage.this, Dashboard.class);
-                                            i.putExtra("email", email);
-                                            i.putExtra("fullname", fullname);
-                                            i.putExtra("state", state);
-                                            i.putExtra("lga", lga);
-                                            i.putExtra("from", "state_level");
-                                            startActivity(i);
-                                        }else{
-                                            //go to normal view
-                                            //move to dashboard
-                                            Intent i = new Intent(LoginPage.this, Dashboard.class);
-                                            i.putExtra("email", email);
-                                            i.putExtra("fullname", fullname);
-                                            i.putExtra("state", state);
-                                            i.putExtra("lga", lga);
-                                            i.putExtra("from", "lga_level");
-                                            startActivity(i);
-                                        }
+                                                        try{
+                                                            JSONArray jsonArray = new JSONArray(response);
+                                                            int numOfLga = jsonArray.length();
+                                                            myEdit2.putString( "lgacount", String.valueOf(numOfLga));
+                                                            myEdit2.commit();
+
+                                                            myDialog.dismiss();
+                                                            Toast.makeText(LoginPage.this, status, Toast.LENGTH_SHORT).show();
+
+                                                            //create shared preference for login
+                                                            myEdit.putString( "email", email);
+                                                            myEdit.putString( "password", gotten_password);
+                                                            myEdit.putString("fullname", fullname);
+                                                            myEdit.putString("state", state);
+                                                            myEdit.putString("lga", lga);
+                                                            myEdit.putString("usertype", userType);
+                                                            myEdit.putString("arrival_check", arrival_check);
+                                                            myEdit.putString("process_check", process_check);
+                                                            myEdit.putString("result_submit", result_submit);
+                                                            myEdit.commit();
+
+
+                                                            if (userType.equals("admin")){
+                                                                //go to state level view
+                                                                //move to dashboard
+                                                                Intent i = new Intent(LoginPage.this, Dashboard.class);
+                                                                i.putExtra("email", email);
+                                                                i.putExtra("fullname", fullname);
+                                                                i.putExtra("state", state);
+                                                                i.putExtra("lga", lga);
+                                                                i.putExtra("password", gotten_password);
+                                                                i.putExtra("from", "state_level");
+                                                                startActivity(i);
+                                                            }else{
+                                                                //go to normal view
+                                                                //move to dashboard
+                                                                Intent i = new Intent(LoginPage.this, Dashboard.class);
+                                                                i.putExtra("email", email);
+                                                                i.putExtra("fullname", fullname);
+                                                                i.putExtra("state", state);
+                                                                i.putExtra("lga", lga);
+                                                                i.putExtra("password", gotten_password);
+                                                                i.putExtra("from", "lga_level");
+                                                                startActivity(i);
+                                                            }
+                                                        }
+                                                        catch (JSONException e){
+                                                            e.printStackTrace();
+                                                        }
+
+                                                    }
+                                                },
+                                                new Response.ErrorListener() {
+                                                    @Override
+                                                    public void onErrorResponse(VolleyError volleyError) {
+
+                                                        if(volleyError == null){
+                                                            return;
+                                                        }
+                                                    }
+                                                }){
+                                            @Override
+                                            protected Map<String, String> getParams(){
+                                                Map<String, String> params = new HashMap<>();
+                                                params.put("dstate", state);
+                                                return params;
+                                            }
+                                        };
+
+                                        RequestQueue requestQueue2 = Volley.newRequestQueue(getApplicationContext());
+                                        DefaultRetryPolicy retryPolicy2 = new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                                        stringRequest2.setRetryPolicy(retryPolicy2);
+                                        requestQueue2.add(stringRequest2);
+                                        requestQueue2.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
+                                            @Override
+                                            public void onRequestFinished(Request<Object> request) {
+                                                requestQueue2.getCache().clear();
+                                            }
+                                        });
+
+
+
+
 
 
                                     }else{
@@ -158,7 +218,6 @@ public class LoginPage extends AppCompatActivity {
                                 if(volleyError == null){
                                     return;
                                 }
-
                                 myDialog.dismiss();
                                 Toast.makeText(LoginPage.this,  "Network Error", Toast.LENGTH_LONG).show();
                             }

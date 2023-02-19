@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +48,7 @@ public class ResultVerification extends Fragment {
     String got_state;
     TextView lgaCount;
     String status;
+    ProgressBar progressBar;
 
 
     ArrayList<String> lga_of_state = new ArrayList<>();
@@ -75,7 +77,7 @@ public class ResultVerification extends Fragment {
         usertype = preferences.getString("usertype", "");
 
         preferences2 = getActivity().getSharedPreferences("lga_count", Context.MODE_PRIVATE);
-        final String lga_count = preferences2.getString("lgacount", "1");
+        final String lga_count = preferences2.getString("lgacount", "");
 
         fullname = v.findViewById(R.id.fullname);
         state = v.findViewById(R.id.state);
@@ -84,6 +86,7 @@ public class ResultVerification extends Fragment {
         lin_lgacount = v.findViewById(R.id.lin_lgacount);
         listView = v.findViewById(R.id.listview);
         lgaCount = v.findViewById(R.id.lga_count);
+        progressBar = v.findViewById(R.id.progressBar);
 
         fullname.setText(got_fullname);
         state.setText(got_state);
@@ -123,6 +126,7 @@ public class ResultVerification extends Fragment {
                             }
                             LgaListAdapter lgaListAdapter = new LgaListAdapter(getContext(), lga_of_state, status_of_lga, color_update, got_state);
                             listView.setAdapter(lgaListAdapter);
+                            progressBar.setVisibility(View.GONE);
 
 
 //                            loadnext();

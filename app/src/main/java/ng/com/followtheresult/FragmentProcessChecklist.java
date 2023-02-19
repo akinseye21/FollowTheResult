@@ -47,6 +47,7 @@ public class FragmentProcessChecklist extends Fragment {
     AppCompatButton next;
     public static final String GET_QUESTIONS = "https://readytoleadafrica.org/rtl_mobile/get_questions";
     public static final String SUBMIT_PROCESS = "https://readytoleadafrica.org/rtl_mobile/process_checks";
+    public static final String SUBMIT_PROCESS_STATE = "https://readytoleadafrica.org/rtl_mobile/process_checks_state";
 
     ArrayList<String> arr_id;
     ArrayList<String> arr_question_process;
@@ -55,6 +56,7 @@ public class FragmentProcessChecklist extends Fragment {
     ArrayList<String> arr_option2_process;
     int count = 1;
     int counter = 0;
+    int convert;
 
     TextView presentQuestion, totalQuestion;
     TextView question;
@@ -65,6 +67,8 @@ public class FragmentProcessChecklist extends Fragment {
     AppCompatButton submission;
 
     String[] responses;
+    String arrival_check, process_check, result_submit;
+
 
     SharedPreferences preferences, preferences2;
     String got_fullname;
@@ -93,6 +97,9 @@ public class FragmentProcessChecklist extends Fragment {
         got_lga = preferences.getString("lga", "not available");
         got_email = preferences.getString("email", "not available");
         usertype = preferences.getString("usertype", "");
+        arrival_check = preferences.getString("arrival_check", "0");
+        process_check = preferences.getString("process_check", "0");
+        result_submit = preferences.getString("result_submit", "0");
 
         preferences2 = getActivity().getSharedPreferences("lga_count", Context.MODE_PRIVATE);
         final String lga_count = preferences2.getString("lgacount", "1");
@@ -333,7 +340,7 @@ public class FragmentProcessChecklist extends Fragment {
 
                 if(usertype.equals("admin")){
                     //send the results to the DB
-                    StringRequest stringRequest2 = new StringRequest(Request.Method.POST, SUBMIT_PROCESS,
+                    StringRequest stringRequest2 = new StringRequest(Request.Method.POST, SUBMIT_PROCESS_STATE,
                             new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
@@ -343,13 +350,24 @@ public class FragmentProcessChecklist extends Fragment {
                                         String notification = jsonObject.getString("notification");
 
                                         if (status.equals("successful")){
+                                            //convert arrival check to integer
+                                            convert = Integer.parseInt(process_check);
+                                            //add 1 to the integer value of arrival check
+                                            convert = convert + 1;
+                                            //pass the string value to the sharedpreference
+                                            SharedPreferences.Editor myEdit2 = preferences.edit();
+                                            myEdit2.putString("process_check", String.valueOf(convert));
+                                            myEdit2.commit();
+
                                             myDialog.dismiss();
                                             myDialog2.dismiss();
                                             Toast.makeText(getContext(), notification+" Process checklist", Toast.LENGTH_SHORT).show();
-                                            ((Dashboard)getActivity()).navigateFragment(0);
+//                                            ((Dashboard)getActivity()).navigateFragment(0);
                                             //go back to fragment checklist
-//                                            Intent i = new Intent(getContext(), Dashboard.class);
-//                                            startActivity(i);
+                                            Intent i = new Intent(getContext(), Dashboard.class);
+                                            i.putExtra("from", "state_level");
+                                            i.putExtra("state", got_state);
+                                            startActivity(i);
                                         }else{
                                             myDialog.dismiss();
                                             myDialog2.dismiss();
@@ -362,7 +380,10 @@ public class FragmentProcessChecklist extends Fragment {
                                         myDialog.dismiss();
                                         myDialog2.dismiss();
                                         Toast.makeText(getContext(), "You have submitted a response before... You can not submit again", Toast.LENGTH_LONG).show();
-                                        ((Dashboard)getActivity()).navigateFragment(0);
+                                        Intent i = new Intent(getContext(), Dashboard.class);
+                                        i.putExtra("from", "state_level");
+                                        i.putExtra("state", got_state);
+                                        startActivity(i);
                                     }
 
                                 }
@@ -419,13 +440,24 @@ public class FragmentProcessChecklist extends Fragment {
                                         String notification = jsonObject.getString("notification");
 
                                         if (status.equals("successful")){
+                                            //convert arrival check to integer
+                                            convert = Integer.parseInt(process_check);
+                                            //add 1 to the integer value of arrival check
+                                            convert = convert + 1;
+                                            //pass the string value to the sharedpreference
+                                            SharedPreferences.Editor myEdit2 = preferences.edit();
+                                            myEdit2.putString("process_check", String.valueOf(convert));
+                                            myEdit2.commit();
+
                                             myDialog.dismiss();
                                             myDialog2.dismiss();
                                             Toast.makeText(getContext(), notification+" Process checklist", Toast.LENGTH_SHORT).show();
-                                            ((Dashboard)getActivity()).navigateFragment(0);
+//                                            ((Dashboard)getActivity()).navigateFragment(0);
                                             //go back to fragment checklist
-//                                            Intent i = new Intent(getContext(), Dashboard.class);
-//                                            startActivity(i);
+                                            Intent i = new Intent(getContext(), Dashboard.class);
+                                            i.putExtra("from", "lga_level");
+                                            i.putExtra("state", got_state);
+                                            startActivity(i);
                                         }else{
                                             myDialog.dismiss();
                                             myDialog2.dismiss();
@@ -438,7 +470,10 @@ public class FragmentProcessChecklist extends Fragment {
                                         myDialog.dismiss();
                                         myDialog2.dismiss();
                                         Toast.makeText(getContext(), "You have submitted a response before... You can not submit again", Toast.LENGTH_LONG).show();
-                                        ((Dashboard)getActivity()).navigateFragment(0);
+                                        Intent i = new Intent(getContext(), Dashboard.class);
+                                        i.putExtra("from", "lga_level");
+                                        i.putExtra("state", got_state);
+                                        startActivity(i);
                                     }
 
                                 }

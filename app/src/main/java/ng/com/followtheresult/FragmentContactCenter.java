@@ -1,7 +1,9 @@
 package ng.com.followtheresult;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -37,6 +39,7 @@ public class FragmentContactCenter extends Fragment {
     LinearLayout lin_lga, lin_lgacount;
     TextView lgaCount;
     TextView phone1, phone2, phone3;
+    String got_state;
 
     ArrayList<String> arr_phone1 = new ArrayList<>();
     ArrayList<String> arr_phone2 = new ArrayList<>();
@@ -58,12 +61,12 @@ public class FragmentContactCenter extends Fragment {
 
         preferences = getActivity().getSharedPreferences("LoginDetails", Context.MODE_PRIVATE);
         final String got_fullname = preferences.getString("fullname", "not available");
-        final String got_state = preferences.getString("state", "not available");
+        got_state = preferences.getString("state", "not available");
         final String got_lga = preferences.getString("lga", "not available");
         final String usertype = preferences.getString("usertype", "");
 
         preferences2 = getActivity().getSharedPreferences("lga_count", Context.MODE_PRIVATE);
-        final String lga_count = preferences2.getString("lgacount", "1");
+        final String lga_count = preferences2.getString("lgacount", "");
 
         fullname = v.findViewById(R.id.fullname);
         state = v.findViewById(R.id.state);
@@ -71,9 +74,9 @@ public class FragmentContactCenter extends Fragment {
         lin_lga = v.findViewById(R.id.lin_lga);
         lin_lgacount = v.findViewById(R.id.lin_lgacount);
         lgaCount = v.findViewById(R.id.lga_count);
-        phone1 = v.findViewById(R.id.phone1);
-        phone2 = v.findViewById(R.id.phone2);
-        phone3 = v.findViewById(R.id.phone3);
+        phone1 = v.findViewById(R.id.phone_1);
+        phone2 = v.findViewById(R.id.phone_2);
+        phone3 = v.findViewById(R.id.phone_3);
 
         fullname.setText(got_fullname);
         state.setText(got_state);
@@ -96,19 +99,14 @@ public class FragmentContactCenter extends Fragment {
                             for(int w=0; w<=jsonArray.length()-1; w++){
                                 JSONObject jsonObject = jsonArray.getJSONObject(w);
                                 String name = jsonObject.getString("name");
-                                if (name.equals(got_state.toUpperCase())){
-                                    String phone_1 = jsonObject.getString("phone1");
-                                    String phone_2 = jsonObject.getString("phone2");
-                                    String phone_3 = jsonObject.getString("phone3");
+                                String phone_1 = jsonObject.getString("phone1");
+                                String phone_2 = jsonObject.getString("phone2");
+                                String phone_3 = jsonObject.getString("phone3");
 
+                                if (name.equals(got_state)){
                                     phone1.setText(phone_1);
                                     phone2.setText(phone_2);
                                     phone3.setText(phone_3);
-                                }
-                                else{
-                                    phone1.setText("xxxxx");
-                                    phone2.setText("xxxxx");
-                                    phone3.setText("xxxxx");
                                 }
                             }
 
@@ -143,6 +141,33 @@ public class FragmentContactCenter extends Fragment {
             @Override
             public void onRequestFinished(Request<Object> request) {
                 requestQueue.getCache().clear();
+            }
+        });
+
+        phone1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:"+phone1.getText().toString()));
+                startActivity(intent);
+            }
+        });
+
+        phone2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:"+phone2.getText().toString()));
+                startActivity(intent);
+            }
+        });
+
+        phone3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:"+phone3.getText().toString()));
+                startActivity(intent);
             }
         });
 

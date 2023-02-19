@@ -65,6 +65,7 @@ public class FragmentArrivalChecklist1 extends Fragment {
     ArrayList<String> arr_option5;
     int count = 1;
     int counter = 0;
+    int convert;
 
     TextView presentQuestion, totalQuestion;
     TextView question;
@@ -75,6 +76,7 @@ public class FragmentArrivalChecklist1 extends Fragment {
     EditText textInfo;
     AppCompatButton previous;
     TextView lgaCount;
+    String arrival_check, process_check, result_submit;
 
     LinearLayout popup;
     ListView listView;
@@ -101,6 +103,9 @@ public class FragmentArrivalChecklist1 extends Fragment {
         got_lga = preferences.getString("lga", "not available");
         got_email = preferences.getString("email", "not available");
         usertype = preferences.getString("usertype", "");
+        arrival_check = preferences.getString("arrival_check", "0");
+        process_check = preferences.getString("process_check", "0");
+        result_submit = preferences.getString("result_submit", "0");
 
         preferences2 = getActivity().getSharedPreferences("lga_count", Context.MODE_PRIVATE);
         final String lga_count = preferences2.getString("lgacount", "1");
@@ -612,7 +617,7 @@ public class FragmentArrivalChecklist1 extends Fragment {
 
                 if (usertype.equals("admin")){
                     //send the result to the database using the API for state level
-                    StringRequest stringRequest2 = new StringRequest(Request.Method.POST, SUBMIT_ARRIVAL_LGA,
+                    StringRequest stringRequest2 = new StringRequest(Request.Method.POST, SUBMIT_ARRIVAL_STATE,
                             new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
@@ -622,15 +627,24 @@ public class FragmentArrivalChecklist1 extends Fragment {
                                         String notification = jsonObject.getString("notification");
 
                                         if (status.equals("successful")){
+                                            //convert arrival check to integer
+                                            convert = Integer.parseInt(arrival_check);
+                                            //add 1 to the integer value of arrival check
+                                            convert = convert + 1;
+                                            //pass the string value to the sharedpreference
+                                            SharedPreferences.Editor myEdit2 = preferences.edit();
+                                            myEdit2.putString("arrival_check", String.valueOf(convert));
+                                            myEdit2.commit();
+
                                             myDialog.dismiss();
                                             myDialog2.dismiss();
                                             Toast.makeText(getContext(), notification+" Arrival checklist", Toast.LENGTH_SHORT).show();
-                                            ((Dashboard)getActivity()).navigateFragment(0);
+//                                            ((Dashboard)getActivity()).navigateFragment(0);
                                             //go back to fragment checklist
-//                                        Intent i = new Intent(getContext(), Dashboard.class);
-//                                        i.putExtra("from", usertype);
-//                                        i.putExtra("state", got_state);
-//                                        startActivity(i);
+                                            Intent i = new Intent(getContext(), Dashboard.class);
+                                            i.putExtra("from", "state_level");
+                                            i.putExtra("state", got_state);
+                                            startActivity(i);
                                         }else{
                                             myDialog.dismiss();
                                             myDialog2.dismiss();
@@ -642,13 +656,12 @@ public class FragmentArrivalChecklist1 extends Fragment {
                                         e.printStackTrace();
                                         myDialog.dismiss();
                                         myDialog2.dismiss();
-
                                         Toast.makeText(getContext(), "You have submitted a response before... You can not submit again", Toast.LENGTH_LONG).show();
-                                        ((Dashboard)getActivity()).navigateFragment(0);
-//                                    Intent i = new Intent(getContext(), Dashboard.class);
-//                                    i.putExtra("from", usertype);
-//                                    i.putExtra("state", got_state);
-//                                    startActivity(i);
+//                                        ((Dashboard)getActivity()).navigateFragment(0);
+                                        Intent i = new Intent(getContext(), Dashboard.class);
+                                        i.putExtra("from", "state_level");
+                                        i.putExtra("state", got_state);
+                                        startActivity(i);
                                     }
 
                                 }
@@ -705,15 +718,24 @@ public class FragmentArrivalChecklist1 extends Fragment {
                                         String notification = jsonObject.getString("notification");
 
                                         if (status.equals("successful")){
+                                            //convert arrival check to integer
+                                            convert = Integer.parseInt(arrival_check);
+                                            //add 1 to the integer value of arrival check
+                                            convert = convert + 1;
+                                            //pass the string value to the sharedpreference
+                                            SharedPreferences.Editor myEdit2 = preferences.edit();
+                                            myEdit2.putString("arrival_check", String.valueOf(convert));
+                                            myEdit2.commit();
+
                                             myDialog.dismiss();
                                             myDialog2.dismiss();
                                             Toast.makeText(getContext(), notification+" Arrival checklist", Toast.LENGTH_SHORT).show();
-                                            ((Dashboard)getActivity()).navigateFragment(0);
+//                                            ((Dashboard)getActivity()).navigateFragment(0);
                                             //go back to fragment checklist
-//                                        Intent i = new Intent(getContext(), Dashboard.class);
-//                                        i.putExtra("from", usertype);
-//                                        i.putExtra("state", got_state);
-//                                        startActivity(i);
+                                            Intent i = new Intent(getContext(), Dashboard.class);
+                                            i.putExtra("from", "lga_level");
+                                            i.putExtra("state", got_state);
+                                            startActivity(i);
                                         }else{
                                             myDialog.dismiss();
                                             myDialog2.dismiss();
@@ -725,13 +747,12 @@ public class FragmentArrivalChecklist1 extends Fragment {
                                         e.printStackTrace();
                                         myDialog.dismiss();
                                         myDialog2.dismiss();
-
                                         Toast.makeText(getContext(), "You have submitted a response before... You can not submit again", Toast.LENGTH_LONG).show();
-                                        ((Dashboard)getActivity()).navigateFragment(0);
-//                                    Intent i = new Intent(getContext(), Dashboard.class);
-//                                    i.putExtra("from", usertype);
-//                                    i.putExtra("state", got_state);
-//                                    startActivity(i);
+//                                        ((Dashboard)getActivity()).navigateFragment(0);
+                                        Intent i = new Intent(getContext(), Dashboard.class);
+                                        i.putExtra("from", "lga_level");
+                                        i.putExtra("state", got_state);
+                                        startActivity(i);
                                     }
 
                                 }
