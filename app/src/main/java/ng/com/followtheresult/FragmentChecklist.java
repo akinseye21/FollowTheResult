@@ -92,7 +92,7 @@ public class FragmentChecklist extends Fragment {
             @Override
             public void onClick(View view) {
                 if(arrival_check.equals("0")){
-                    Toast.makeText(getContext(), "Sorry!! Please fill out the arrival checklist before proceeding", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Sorry!! Please fill out the arrival checklist before proceeding", Toast.LENGTH_LONG).show();
                 }else{
                     FragmentManager fm = getFragmentManager();
                     FragmentProcessChecklist fragmentProcessChecklist = new FragmentProcessChecklist();
@@ -109,7 +109,7 @@ public class FragmentChecklist extends Fragment {
             @Override
             public void onClick(View view) {
                 if(process_check.equals("0")){
-                    Toast.makeText(getContext(), "Sorry!! Please complete the process checklist before proceeding", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Sorry!! Please complete the process checklist before proceeding", Toast.LENGTH_LONG).show();
                 }else{
                     FragmentManager fm = getFragmentManager();
                     FragmentResult fragmentResult = new FragmentResult();

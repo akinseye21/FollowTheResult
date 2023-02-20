@@ -296,12 +296,20 @@ public class FragmentProcessChecklist extends Fragment {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(count == arr_id.size()){
-                    //send all captures to DB
-                    //prompt and show users questions and answer, then send on confirmation
-                    validateInput();
+                int selectedId=radioGroupYesNo.getCheckedRadioButtonId();
+                System.out.println("ID = "+selectedId);
+
+                if(selectedId==-1){
+                    Toast.makeText(getContext(), "Please select an option before proceeding", Toast.LENGTH_SHORT).show();
+                    System.out.println("Please select an option before proceeding");
                 }else{
-                    loadViews(count+1, counter+1);
+                    if(count == arr_id.size()){
+                        //send all captures to DB
+                        //prompt and show users questions and answer, then send on confirmation
+                        validateInput();
+                    }else{
+                        loadViews(count+1, counter+1);
+                    }
                 }
             }
         });

@@ -228,6 +228,7 @@
                                 android:layout_height="wrap_content"
                                 android:buttonTint="@color/defaultDark"
                                 android:fontFamily="@font/montserratbold"
+                                android:checked="true"
                                 android:text="Yes"
                                 android:textColor="@color/defaultDark" />
 
