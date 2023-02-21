@@ -187,7 +187,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:id="@+id/phone_1"
-                            android:text="+234-813-743-9027"
+                            android:text=""
                             android:textColor="@color/defaultDark"
                             android:textSize="15dp"
                             android:fontFamily="@font/montserratbold"/>
@@ -208,7 +208,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="+234-813-743-9027"
+                            android:text=""
                             android:id="@+id/phone_2"
                             android:textColor="@color/defaultDark"
                             android:textSize="15dp"
@@ -230,7 +230,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="+234-813-743-9027"
+                            android:text=""
                             android:id="@+id/phone_3"
                             android:textColor="@color/defaultDark"
                             android:textSize="15dp"

@@ -36,7 +36,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class FragmentDashboard extends Fragment {
+public class FragmentDashboard extends Fragment implements Backpressedlistener {
+
+    public static Backpressedlistener backpressedlistener;
 
     TextView fullname, state, lga;
     SharedPreferences preferences, preferences2;
@@ -223,6 +225,38 @@ public class FragmentDashboard extends Fragment {
         return v;
     }
 
+    @Override
+    public void onBackPressed() {
+        Dialog myDialogFinish = new Dialog(getContext());
+        myDialogFinish.setContentView(R.layout.custom_popup_prompt);
+        TextView text = myDialogFinish.findViewById(R.id.text);
+        text.setText("Do you want to logout of the application?");
+        AppCompatButton proceed = myDialogFinish.findViewById(R.id.proceed);
+        AppCompatButton close = myDialogFinish.findViewById(R.id.close);
+        proceed.setText("YES");
+        close.setText("NO");
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                myDialogFinish.dismiss();
+            }
+        });
+        proceed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences preferences = getActivity().getSharedPreferences("LoginDetails", Context.MODE_PRIVATE);
+                preferences.edit().clear().commit();
+
+                Intent i = new Intent(getContext(), LoginPage.class);
+                startActivity(i);
+            }
+        });
+        myDialogFinish.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        myDialogFinish.setCanceledOnTouchOutside(false);
+        myDialogFinish.show();
+    }
+
     public interface OnFragmentInteractionListener {
     }
+
 }

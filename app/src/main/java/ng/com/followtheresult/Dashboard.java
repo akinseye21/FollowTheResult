@@ -94,6 +94,9 @@ FragmentUserProfile.OnFragmentInteractionListener{
                             else if(tab.getPosition() == 3){
                                 pageTitle.setText("USER PROFILE");
                             }
+                            else if(tab.getPosition() == 4){
+                                pageTitle.setText("INCIDENCE CHECKLIST");
+                            }
                         }
 
                         @Override
@@ -110,6 +113,9 @@ FragmentUserProfile.OnFragmentInteractionListener{
                             }
                             else if(tab.getPosition() == 3){
                                 pageTitle.setText("USER PROFILE");
+                            }
+                            else if(tab.getPosition() == 4){
+                                pageTitle.setText("INCIDENCE CHECKLIST");
                             }
                         }
                     }
@@ -143,6 +149,9 @@ FragmentUserProfile.OnFragmentInteractionListener{
                             else if(tab.getPosition() == 4){
                                 pageTitle.setText("USER PROFILE");
                             }
+                            else if(tab.getPosition() == 5){
+                                pageTitle.setText("INCIDENCE CHECKLIST");
+                            }
                         }
 
                         @Override
@@ -163,6 +172,9 @@ FragmentUserProfile.OnFragmentInteractionListener{
                             else if(tab.getPosition() == 4){
                                 pageTitle.setText("USER PROFILE");
                             }
+                            else if(tab.getPosition() == 5){
+                                pageTitle.setText("INCIDENCE CHECKLIST");
+                            }
                         }
                     }
             );
@@ -175,6 +187,7 @@ FragmentUserProfile.OnFragmentInteractionListener{
         tabLayout.getTabAt(1).setIcon(R.drawable.ic16);
         tabLayout.getTabAt(2).setIcon(R.drawable.ic17);
         tabLayout.getTabAt(3).setIcon(R.drawable.ic18);
+        tabLayout.getTabAt(4).setIcon(R.drawable.forbidden);
     }
 
     private void setupTabIcons_state() {
@@ -183,6 +196,7 @@ FragmentUserProfile.OnFragmentInteractionListener{
         tabLayout.getTabAt(2).setIcon(R.drawable.ic17);
         tabLayout.getTabAt(3).setIcon(R.drawable.ic22);
         tabLayout.getTabAt(4).setIcon(R.drawable.ic18);
+        tabLayout.getTabAt(5).setIcon(R.drawable.forbidden);
     }
 
     private void addTabs(ViewPager viewPager) {
@@ -191,6 +205,7 @@ FragmentUserProfile.OnFragmentInteractionListener{
         adapter.addFrag(new FragmentChecklist(), "");
         adapter.addFrag(new FragmentContactCenter(), "");
         adapter.addFrag(new FragmentUserProfile(), "");
+        adapter.addFrag(new FragmentViolenceChecklist(), "");
         viewPager.setAdapter(adapter);
     }
 
@@ -201,6 +216,7 @@ FragmentUserProfile.OnFragmentInteractionListener{
         adapter.addFrag(new FragmentContactCenter(), "");
         adapter.addFrag(new ResultVerification(), "");
         adapter.addFrag(new FragmentUserProfile(), "");
+        adapter.addFrag(new FragmentViolenceChecklist(), "");
         viewPager.setAdapter(adapter);
     }
 
@@ -241,7 +257,7 @@ FragmentUserProfile.OnFragmentInteractionListener{
 
     @Override
     public void onBackPressed() {
-        Dialog myDialogFinish = new Dialog(getApplicationContext());
+        Dialog myDialogFinish = new Dialog(Dashboard.this);
         myDialogFinish.setContentView(R.layout.custom_popup_prompt);
         TextView text = myDialogFinish.findViewById(R.id.text);
         text.setText("Do you want to logout of the application?");
@@ -261,7 +277,7 @@ FragmentUserProfile.OnFragmentInteractionListener{
                 SharedPreferences preferences = getSharedPreferences("LoginDetails", Context.MODE_PRIVATE);
                 preferences.edit().clear().commit();
 
-                Intent i = new Intent(getApplicationContext(), LoginPage.class);
+                Intent i = new Intent(Dashboard.this, LoginPage.class);
                 startActivity(i);
             }
         });
