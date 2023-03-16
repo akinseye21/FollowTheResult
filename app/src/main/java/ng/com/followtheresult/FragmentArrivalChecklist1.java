@@ -615,190 +615,96 @@ public class FragmentArrivalChecklist1 extends Fragment {
                 myDialog.setCanceledOnTouchOutside(false);
                 myDialog.show();
 
-                if (usertype.equals("admin")){
-                    //send the result to the database using the API for state level
-                    StringRequest stringRequest2 = new StringRequest(Request.Method.POST, SUBMIT_ARRIVAL_STATE,
-                            new Response.Listener<String>() {
-                                @Override
-                                public void onResponse(String response) {
-                                    try{
-                                        JSONObject jsonObject = new JSONObject(response);
-                                        String status = jsonObject.getString("status");
-                                        String notification = jsonObject.getString("notification");
 
-                                        if (status.equals("successful")){
-                                            //convert arrival check to integer
-                                            convert = Integer.parseInt(arrival_check);
-                                            //add 1 to the integer value of arrival check
-                                            convert = convert + 1;
-                                            //pass the string value to the sharedpreference
-                                            SharedPreferences.Editor myEdit2 = preferences.edit();
-                                            myEdit2.putString("arrival_check", String.valueOf(convert));
-                                            myEdit2.commit();
+                //send the result to the database using the API for state level
+                StringRequest stringRequest2 = new StringRequest(Request.Method.POST, SUBMIT_ARRIVAL_STATE,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                try{
+                                    JSONObject jsonObject = new JSONObject(response);
+                                    String status = jsonObject.getString("status");
+                                    String notification = jsonObject.getString("notification");
 
-                                            myDialog.dismiss();
-                                            myDialog2.dismiss();
-                                            Toast.makeText(getContext(), notification+" Arrival checklist", Toast.LENGTH_SHORT).show();
-//                                            ((Dashboard)getActivity()).navigateFragment(0);
-                                            //go back to fragment checklist
-                                            Intent i = new Intent(getContext(), Dashboard.class);
-                                            i.putExtra("from", "state_level");
-                                            i.putExtra("state", got_state);
-                                            startActivity(i);
-                                        }else{
-                                            myDialog.dismiss();
-                                            myDialog2.dismiss();
-                                            Toast.makeText(getContext(), "Sending Failed! please try again", Toast.LENGTH_SHORT).show();
-                                        }
+                                    if (status.equals("successful")){
+                                        //convert arrival check to integer
+                                        convert = Integer.parseInt(arrival_check);
+                                        //add 1 to the integer value of arrival check
+                                        convert = convert + 1;
+                                        //pass the string value to the sharedpreference
+                                        SharedPreferences.Editor myEdit2 = preferences.edit();
+                                        myEdit2.putString("arrival_check", String.valueOf(convert));
+                                        myEdit2.commit();
 
-                                    }
-                                    catch (JSONException e){
-                                        e.printStackTrace();
                                         myDialog.dismiss();
                                         myDialog2.dismiss();
-                                        Toast.makeText(getContext(), "You have submitted a response before... You can not submit again", Toast.LENGTH_LONG).show();
-//                                        ((Dashboard)getActivity()).navigateFragment(0);
+                                        Toast.makeText(getContext(), notification+" Arrival checklist", Toast.LENGTH_SHORT).show();
+//                                            ((Dashboard)getActivity()).navigateFragment(0);
+                                        //go back to fragment checklist
                                         Intent i = new Intent(getContext(), Dashboard.class);
                                         i.putExtra("from", "state_level");
                                         i.putExtra("state", got_state);
                                         startActivity(i);
-                                    }
-
-                                }
-                            },
-                            new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError volleyError) {
-
-                                    if(volleyError == null){
-                                        return;
-                                    }
-                                    myDialog.dismiss();
-                                    myDialog2.dismiss();
-                                    Toast.makeText(getContext(), "Error! Please check network connectivity and try again", Toast.LENGTH_SHORT).show();
-                                }
-                            }){
-                        @Override
-                        protected Map<String, String> getParams(){
-                            Map<String, String> params = new HashMap<>();
-                            params.put("dstate", got_state);
-                            params.put("user", got_email);
-                            params.put("observer_arrival", responses[0]);
-                            params.put("collation_arrival", responses[1]);
-                            params.put("obs_permit", responses[2]);
-                            params.put("sum_collation_officer", responses[3]);
-                            params.put("female_collation_officer", responses[4]);
-                            params.put("security", responses[5]);
-                            params.put("party_agents", responses[6]);
-                            params.put("pwd_access", responses[7]);
-                            return params;
-                        }
-                    };
-
-                    RequestQueue requestQueue2 = Volley.newRequestQueue(getContext());
-                    DefaultRetryPolicy retryPolicy2 = new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-                    stringRequest2.setRetryPolicy(retryPolicy2);
-                    requestQueue2.add(stringRequest2);
-                    requestQueue2.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
-                        @Override
-                        public void onRequestFinished(Request<Object> request) {
-                            requestQueue2.getCache().clear();
-                        }
-                    });
-
-                }else{
-                    //send the results to the DB using the API for LGA level
-                    StringRequest stringRequest = new StringRequest(Request.Method.POST, SUBMIT_ARRIVAL_LGA,
-                            new Response.Listener<String>() {
-                                @Override
-                                public void onResponse(String response) {
-                                    try{
-                                        JSONObject jsonObject = new JSONObject(response);
-                                        String status = jsonObject.getString("status");
-                                        String notification = jsonObject.getString("notification");
-
-                                        if (status.equals("successful")){
-                                            //convert arrival check to integer
-                                            convert = Integer.parseInt(arrival_check);
-                                            //add 1 to the integer value of arrival check
-                                            convert = convert + 1;
-                                            //pass the string value to the sharedpreference
-                                            SharedPreferences.Editor myEdit2 = preferences.edit();
-                                            myEdit2.putString("arrival_check", String.valueOf(convert));
-                                            myEdit2.commit();
-
-                                            myDialog.dismiss();
-                                            myDialog2.dismiss();
-                                            Toast.makeText(getContext(), notification+" Arrival checklist", Toast.LENGTH_SHORT).show();
-//                                            ((Dashboard)getActivity()).navigateFragment(0);
-                                            //go back to fragment checklist
-                                            Intent i = new Intent(getContext(), Dashboard.class);
-                                            i.putExtra("from", "lga_level");
-                                            i.putExtra("state", got_state);
-                                            startActivity(i);
-                                        }else{
-                                            myDialog.dismiss();
-                                            myDialog2.dismiss();
-                                            Toast.makeText(getContext(), "Sending Failed! please try again", Toast.LENGTH_SHORT).show();
-                                        }
-
-                                    }
-                                    catch (JSONException e){
-                                        e.printStackTrace();
+                                    }else{
                                         myDialog.dismiss();
                                         myDialog2.dismiss();
-                                        Toast.makeText(getContext(), "You have submitted a response before... You can not submit again", Toast.LENGTH_LONG).show();
-//                                        ((Dashboard)getActivity()).navigateFragment(0);
-                                        Intent i = new Intent(getContext(), Dashboard.class);
-                                        i.putExtra("from", "lga_level");
-                                        i.putExtra("state", got_state);
-                                        startActivity(i);
+                                        Toast.makeText(getContext(), "Sending Failed! please try again", Toast.LENGTH_SHORT).show();
                                     }
 
                                 }
-                            },
-                            new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError volleyError) {
-
-                                    if(volleyError == null){
-                                        return;
-                                    }
+                                catch (JSONException e){
+                                    e.printStackTrace();
                                     myDialog.dismiss();
                                     myDialog2.dismiss();
-                                    Toast.makeText(getContext(), "Error! Please check network connectivity and try again", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(), "You have submitted a response before... You can not submit again", Toast.LENGTH_LONG).show();
+//                                        ((Dashboard)getActivity()).navigateFragment(0);
+                                    Intent i = new Intent(getContext(), Dashboard.class);
+                                    i.putExtra("from", "state_level");
+                                    i.putExtra("state", got_state);
+                                    startActivity(i);
                                 }
-                            }){
-                        @Override
-                        protected Map<String, String> getParams(){
-                            Map<String, String> params = new HashMap<>();
-                            params.put("lga", got_lga);
-                            params.put("dstate", got_state);
-                            params.put("user", got_email);
-                            params.put("observer_arrival", responses[0]);
-                            params.put("collation_arrival", responses[1]);
-                            params.put("obs_permit", responses[2]);
-                            params.put("sum_collation_officer", responses[3]);
-                            params.put("female_collation_officer", responses[4]);
-                            params.put("security", responses[5]);
-                            params.put("party_agents", responses[6]);
-                            params.put("pwd_access", responses[7]);
-                            return params;
-                        }
-                    };
 
-                    RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-                    DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-                    stringRequest.setRetryPolicy(retryPolicy);
-                    requestQueue.add(stringRequest);
-                    requestQueue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
-                        @Override
-                        public void onRequestFinished(Request<Object> request) {
-                            requestQueue.getCache().clear();
-                        }
-                    });
-                }
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError volleyError) {
 
+                                if(volleyError == null){
+                                    return;
+                                }
+                                myDialog.dismiss();
+                                myDialog2.dismiss();
+                                Toast.makeText(getContext(), "Error! Please check network connectivity and try again", Toast.LENGTH_SHORT).show();
+                            }
+                        }){
+                    @Override
+                    protected Map<String, String> getParams(){
+                        Map<String, String> params = new HashMap<>();
+                        params.put("dstate", got_state);
+                        params.put("user", got_email);
+                        params.put("observer_arrival", responses[0]);
+                        params.put("collation_arrival", responses[1]);
+                        params.put("obs_permit", responses[2]);
+                        params.put("sum_collation_officer", responses[3]);
+                        params.put("female_collation_officer", responses[4]);
+                        params.put("security", responses[5]);
+                        params.put("party_agents", responses[6]);
+                        params.put("pwd_access", responses[7]);
+                        return params;
+                    }
+                };
+
+                RequestQueue requestQueue2 = Volley.newRequestQueue(getContext());
+                DefaultRetryPolicy retryPolicy2 = new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                stringRequest2.setRetryPolicy(retryPolicy2);
+                requestQueue2.add(stringRequest2);
+                requestQueue2.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
+                    @Override
+                    public void onRequestFinished(Request<Object> request) {
+                        requestQueue2.getCache().clear();
+                    }
+                });
 
                 //clear the array
                 arr_id.clear();
@@ -809,6 +715,105 @@ public class FragmentArrivalChecklist1 extends Fragment {
                 arr_option3.clear();
                 arr_option4.clear();
                 arr_option5.clear();
+
+//                if (usertype.equals("admin")){
+//
+//
+//                }else{
+//                    //send the results to the DB using the API for LGA level
+//                    StringRequest stringRequest = new StringRequest(Request.Method.POST, SUBMIT_ARRIVAL_LGA,
+//                            new Response.Listener<String>() {
+//                                @Override
+//                                public void onResponse(String response) {
+//                                    try{
+//                                        JSONObject jsonObject = new JSONObject(response);
+//                                        String status = jsonObject.getString("status");
+//                                        String notification = jsonObject.getString("notification");
+//
+//                                        if (status.equals("successful")){
+//                                            //convert arrival check to integer
+//                                            convert = Integer.parseInt(arrival_check);
+//                                            //add 1 to the integer value of arrival check
+//                                            convert = convert + 1;
+//                                            //pass the string value to the sharedpreference
+//                                            SharedPreferences.Editor myEdit2 = preferences.edit();
+//                                            myEdit2.putString("arrival_check", String.valueOf(convert));
+//                                            myEdit2.commit();
+//
+//                                            myDialog.dismiss();
+//                                            myDialog2.dismiss();
+//                                            Toast.makeText(getContext(), notification+" Arrival checklist", Toast.LENGTH_SHORT).show();
+////                                            ((Dashboard)getActivity()).navigateFragment(0);
+//                                            //go back to fragment checklist
+//                                            Intent i = new Intent(getContext(), Dashboard.class);
+//                                            i.putExtra("from", "lga_level");
+//                                            i.putExtra("state", got_state);
+//                                            startActivity(i);
+//                                        }else{
+//                                            myDialog.dismiss();
+//                                            myDialog2.dismiss();
+//                                            Toast.makeText(getContext(), "Sending Failed! please try again", Toast.LENGTH_SHORT).show();
+//                                        }
+//
+//                                    }
+//                                    catch (JSONException e){
+//                                        e.printStackTrace();
+//                                        myDialog.dismiss();
+//                                        myDialog2.dismiss();
+//                                        Toast.makeText(getContext(), "You have submitted a response before... You can not submit again", Toast.LENGTH_LONG).show();
+////                                        ((Dashboard)getActivity()).navigateFragment(0);
+//                                        Intent i = new Intent(getContext(), Dashboard.class);
+//                                        i.putExtra("from", "lga_level");
+//                                        i.putExtra("state", got_state);
+//                                        startActivity(i);
+//                                    }
+//
+//                                }
+//                            },
+//                            new Response.ErrorListener() {
+//                                @Override
+//                                public void onErrorResponse(VolleyError volleyError) {
+//
+//                                    if(volleyError == null){
+//                                        return;
+//                                    }
+//                                    myDialog.dismiss();
+//                                    myDialog2.dismiss();
+//                                    Toast.makeText(getContext(), "Error! Please check network connectivity and try again", Toast.LENGTH_SHORT).show();
+//                                }
+//                            }){
+//                        @Override
+//                        protected Map<String, String> getParams(){
+//                            Map<String, String> params = new HashMap<>();
+//                            params.put("lga", got_lga);
+//                            params.put("dstate", got_state);
+//                            params.put("user", got_email);
+//                            params.put("observer_arrival", responses[0]);
+//                            params.put("collation_arrival", responses[1]);
+//                            params.put("obs_permit", responses[2]);
+//                            params.put("sum_collation_officer", responses[3]);
+//                            params.put("female_collation_officer", responses[4]);
+//                            params.put("security", responses[5]);
+//                            params.put("party_agents", responses[6]);
+//                            params.put("pwd_access", responses[7]);
+//                            return params;
+//                        }
+//                    };
+//
+//                    RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+//                    DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+//                    stringRequest.setRetryPolicy(retryPolicy);
+//                    requestQueue.add(stringRequest);
+//                    requestQueue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
+//                        @Override
+//                        public void onRequestFinished(Request<Object> request) {
+//                            requestQueue.getCache().clear();
+//                        }
+//                    });
+//                }
+
+
+
             }
         });
         myDialog2.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));

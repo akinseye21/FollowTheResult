@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -84,6 +85,8 @@ public class FragmentResult extends Fragment{
     TextView filename;
     String displayName;
     String encodedImage;
+
+    Uri uri;
 
     int convert;
     ImageView img;
@@ -349,8 +352,13 @@ public class FragmentResult extends Fragment{
                     btn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                            startActivityForResult(intent, 101);
+                            Intent intent = new Intent();
+                            intent.setAction(Intent.ACTION_GET_CONTENT);
+                            intent.setType("image/*");
+                            startActivityForResult(intent,1);
+
+//                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                            startActivityForResult(intent, 101);
 
 //                            Intent intent = new Intent();
 //                            intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -362,6 +370,7 @@ public class FragmentResult extends Fragment{
                     submitList.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
+                            uploadPDF(displayName, uri);
                             uploadToServer();
                         }
                     });
@@ -528,277 +537,147 @@ public class FragmentResult extends Fragment{
     @SuppressLint("Range")
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (resultCode == RESULT_OK) {
-//            Uri uri = data.getData();
-//            //set image view
-//            Bitmap bitmap;
-//            try {
-//                bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), uri);
-//                img.setImageBitmap(bitmap);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//            // Get the Uri of the selected file
-//            String uriString = uri.toString();
-//            File myFile = new File(uriString);
-//            displayName = null;
-//            if (uriString.startsWith("content://")) {
-//                Cursor cursor = null;
-//                try {
-//                    cursor = getActivity().getContentResolver().query(uri, null, null, null, null);
-//                    if (cursor != null && cursor.moveToFirst()) {
-//                        displayName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
-//                        Log.d("nameeeee>>>>  ",displayName);
-//                        filename.setText("File name: "+displayName);
-//                        submitList.setOnClickListener(new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View view) {
-//                                myDialogFinal = new Dialog(getContext());
-//                                myDialogFinal.setContentView(R.layout.custom_popup_loading);
-//                                TextView text = myDialogFinal.findViewById(R.id.text);
-//                                text.setText("Uploading result... Please wait");
-//                                myDialogFinal.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-//                                myDialogFinal.setCanceledOnTouchOutside(false);
-//                                myDialogFinal.show();
-//                                uploadImage(displayName,uri);
-//                            }
-//                        });
-//
-//                    }
-//                } finally {
-//                    cursor.close();
-//                }
-//            } else if (uriString.startsWith("file://")) {
-//                displayName = myFile.getName();
-//                Log.d("nameeeee>>>>  ",displayName);
-//                filename.setText("File name: "+displayName);
-//                submitList.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        myDialogFinal = new Dialog(getContext());
-//                        myDialogFinal.setContentView(R.layout.custom_popup_loading);
-//                        TextView text = myDialogFinal.findViewById(R.id.text);
-//                        text.setText("Uploading result... Please wait");
-//                        myDialogFinal.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-//                        myDialogFinal.setCanceledOnTouchOutside(false);
-//                        myDialogFinal.show();
-//                        uploadImage(displayName,uri);
-//                    }
-//                });
-//            }
-//        }
-        if(requestCode == 101 && resultCode == RESULT_OK){
-            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-            img.setImageBitmap(bitmap);
-            encodebitmap(bitmap);
+        if (resultCode == RESULT_OK) {
+            // Get the Uri of the selected file
+            uri = data.getData();
+            String uriString = uri.toString();
+            File myFile = new File(uriString);
+            Bitmap myBitmap = null;
+            try {
+                myBitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), uri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            img.setImageBitmap(myBitmap);
+            displayName = null;
+            if (uriString.startsWith("content://")) {
+                Cursor cursor = null;
+                try {
+                    cursor = getActivity().getContentResolver().query(uri, null, null, null, null);
+                    if (cursor != null && cursor.moveToFirst()) {
+                        displayName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                        Log.d("nameeeee>>>>  ",displayName);
+//                        file_path.setText(displayName);
+//                        uploadPDF(displayName,uri);
+                    }
+                } finally {
+                    cursor.close();
+                }
+            } else if (uriString.startsWith("file://")) {
+                displayName = myFile.getName();
+                Log.d("nameeeee>>>>  ",displayName);
+//                file_path.setText(displayName);
+//                uploadPDF(displayName,uri);
+            }
         }
+
         super.onActivityResult(requestCode, resultCode, data);
 
+    }
+
+    private void uploadPDF(final String pdfname, Uri pdffile) {
+        InputStream iStream = null;
+        try {
+            iStream = getActivity().getContentResolver().openInputStream(pdffile);
+            final byte[] inputData = getBytes(iStream);
+
+            VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, SUBMIT_RESULT_STATE,
+                    new Response.Listener<NetworkResponse>() {
+                        @Override
+                        public void onResponse(NetworkResponse response) {
+
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+
+                        }
+                    }) {
+
+                /*
+                 * If you want to add more parameters with the image
+                 * you can do it here
+                 * here we have only one parameter with the image
+                 * which is tags
+                 * */
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("dstate", got_state);
+                    params.put("user", got_email);
+                    params.put("a", input1);
+                    params.put("aa", input2);
+                    params.put("aac", input3);
+                    params.put("adc", input4);
+                    params.put("adp", input5);
+                    params.put("apc", input6);
+                    params.put("apga", input7);
+                    params.put("apm", input8);
+                    params.put("app", input9);
+                    params.put("bp", input10);
+                    params.put("lp", input11);
+                    params.put("nnpp", input12);
+                    params.put("nrm", input13);
+                    params.put("pdp", input14);
+                    params.put("prp", input15);
+                    params.put("sdp", input16);
+                    params.put("ypp", input17);
+                    params.put("zlp", input18);
+                    return params;
+                }
+
+                /*
+                 *pass files using below method
+                 * */
+                @Override
+                protected Map<String, DataPart> getByteData() {
+                    Map<String, DataPart> params = new HashMap<>();
+                    params.put("myfile", new DataPart(pdfname ,inputData));
+                    return params;
+                }
+            };
+
+
+            volleyMultipartRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    0,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            rQueue = Volley.newRequestQueue(getActivity());
+            rQueue.add(volleyMultipartRequest);
+            rQueue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
+                @Override
+                public void onRequestFinished(Request<Object> request) {
+                    rQueue.getCache().clear();
+                }
+            });
+
+
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
-    private void encodebitmap(Bitmap bitmap) {
+
+    public byte[] getBytes(InputStream inputStream) throws IOException {
         ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteBuffer);
-        byte[] byteofimages = byteBuffer.toByteArray();
-        encodedImage = android.util.Base64.encodeToString(byteofimages, Base64.DEFAULT);
+        int bufferSize = 1024;
+        byte[] buffer = new byte[bufferSize];
+
+        int len = 0;
+        while ((len = inputStream.read(buffer)) != -1) {
+            byteBuffer.write(buffer, 0, len);
+        }
+        return byteBuffer.toByteArray();
     }
 
-//    private void uploadImage(final String imagename, Uri imagefile){
-//        InputStream iStream = null;
-//        try {
-//
-//            iStream = getContext().getContentResolver().openInputStream(imagefile);
-//            final byte[] inputData = getBytes(iStream);
-//
-//            if (usertype.equals("admin")){
-//                VolleyMultipartRequest volleyMultipartRequest1 = new VolleyMultipartRequest(Request.Method.POST, SUBMIT_RESULT_STATE,
-//                        new Response.Listener<NetworkResponse>() {
-//                            @Override
-//                            public void onResponse(NetworkResponse response) {
-//                                String resultResponse = new String(response.data);
-//                                if (resultResponse.equals("success")){
-//                                    myDialogUpload.dismiss();
-//                                    myDialogFinal.dismiss();
-//                                    myDialog.dismiss();
-//                                    Toast.makeText(getContext(), "Result saved successfully", Toast.LENGTH_SHORT).show();
-//                                    ((Dashboard)getActivity()).navigateFragment(0);
-//                                }
-//                                else{
-//                                    myDialogUpload.dismiss();
-//                                    myDialogFinal.dismiss();
-//                                    myDialog.dismiss();
-//                                    Toast.makeText(getContext(), "Error saving, please try again", Toast.LENGTH_SHORT).show();
-//                                }
-//                            }
-//                        },
-//                        new Response.ErrorListener() {
-//                            @Override
-//                            public void onErrorResponse(VolleyError error) {
-//                                myDialogUpload.dismiss();
-//                                myDialogFinal.dismiss();
-//                                myDialog.dismiss();
-//                                Toast.makeText(getContext(), "A network error occurred. Please try again", Toast.LENGTH_SHORT).show();
-//                            }
-//                        }) {
-//
-//                    /*
-//                     * If you want to add more parameters with the image
-//                     * you can do it here
-//                     * here we have only one parameter with the image
-//                     * which is tags
-//                     * */
-//                    @Override
-//                    protected Map<String, String> getParams() throws AuthFailureError {
-//                        Map<String, String> params = new HashMap<>();
-//                        params.put("dstate", got_state);
-//                        params.put("user", got_email);
-//                        params.put("a", input1);
-//                        params.put("aa", input2);
-//                        params.put("aac", input3);
-//                        params.put("adc", input4);
-//                        params.put("adp", input5);
-//                        params.put("apc", input6);
-//                        params.put("apga", input7);
-//                        params.put("apm", input8);
-//                        params.put("app", input9);
-//                        params.put("bp", input10);
-//                        params.put("lp", input11);
-//                        params.put("nnpp", input12);
-//                        params.put("nrm", input13);
-//                        params.put("pdp", input14);
-//                        params.put("prp", input15);
-//                        params.put("sdp", input16);
-//                        params.put("ypp", input17);
-//                        params.put("zlp", input18);
-//                        return params;
-//                    }
-//
-//                    /*
-//                     *pass files using below method
-//                     * */
-//                    @Override
-//                    protected Map<String, DataPart> getByteData() {
-//                        Map<String, DataPart> params = new HashMap<>();
-//                        params.put("myfile", new DataPart(imagename ,inputData));
-//                        return params;
-//                    }
-//                };
-//
-//
-//                volleyMultipartRequest1.setRetryPolicy(new DefaultRetryPolicy(
-//                        0,
-//                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-//                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-//                rQueue = Volley.newRequestQueue(getContext());
-//                rQueue.add(volleyMultipartRequest1);
-//            }
-//            else{
-//                VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, SUBMIT_RESULT,
-//                        new Response.Listener<NetworkResponse>() {
-//                            @Override
-//                            public void onResponse(NetworkResponse response) {
-//                                String resultResponse = new String(response.data);
-//                                if (resultResponse.equals("success")){
-//                                    myDialogUpload.dismiss();
-//                                    myDialogFinal.dismiss();
-//                                    myDialog.dismiss();
-//                                    Toast.makeText(getContext(), "Result saved successfully", Toast.LENGTH_SHORT).show();
-//                                    ((Dashboard)getActivity()).navigateFragment(0);
-//                                }
-//                                else{
-//                                    myDialogUpload.dismiss();
-//                                    myDialogFinal.dismiss();
-//                                    myDialog.dismiss();
-//                                    Toast.makeText(getContext(), "Error saving, please try again", Toast.LENGTH_SHORT).show();
-//                                }
-//                            }
-//                        },
-//                        new Response.ErrorListener() {
-//                            @Override
-//                            public void onErrorResponse(VolleyError error) {
-//                                myDialogUpload.dismiss();
-//                                myDialogFinal.dismiss();
-//                                myDialog.dismiss();
-//                                Toast.makeText(getContext(), "A network error occurred. Please try again", Toast.LENGTH_SHORT).show();
-//                            }
-//                        }) {
-//
-//                    /*
-//                     * If you want to add more parameters with the image
-//                     * you can do it here
-//                     * here we have only one parameter with the image
-//                     * which is tags
-//                     * */
-//                    @Override
-//                    protected Map<String, String> getParams() throws AuthFailureError {
-//                        Map<String, String> params = new HashMap<>();
-//                        params.put("lga", got_lga);
-//                        params.put("dstate", got_state);
-//                        params.put("user", got_email);
-//                        params.put("a", input1);
-//                        params.put("aa", input2);
-//                        params.put("aac", input3);
-//                        params.put("adc", input4);
-//                        params.put("adp", input5);
-//                        params.put("apc", input6);
-//                        params.put("apga", input7);
-//                        params.put("apm", input8);
-//                        params.put("app", input9);
-//                        params.put("bp", input10);
-//                        params.put("lp", input11);
-//                        params.put("nnpp", input12);
-//                        params.put("nrm", input13);
-//                        params.put("pdp", input14);
-//                        params.put("prp", input15);
-//                        params.put("sdp", input16);
-//                        params.put("ypp", input17);
-//                        params.put("zlp", input18);
-//                        return params;
-//                    }
-//
-//                    /*
-//                     *pass files using below method
-//                     * */
-//                    @Override
-//                    protected Map<String, DataPart> getByteData() {
-//                        Map<String, DataPart> params = new HashMap<>();
-//                        params.put("myfile", new DataPart(imagename ,inputData));
-//                        return params;
-//                    }
-//                };
-//
-//
-//                volleyMultipartRequest.setRetryPolicy(new DefaultRetryPolicy(
-//                        0,
-//                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-//                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-//                rQueue = Volley.newRequestQueue(getContext());
-//                rQueue.add(volleyMultipartRequest);
-//            }
-//
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//
-//    }
 
-//    public byte[] getBytes(InputStream inputStream) throws IOException {
-//        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
-//        int bufferSize = 1024;
-//        byte[] buffer = new byte[bufferSize];
-//
-//        int len = 0;
-//        while ((len = inputStream.read(buffer)) != -1) {
-//            byteBuffer.write(buffer, 0, len);
-//        }
-//        return byteBuffer.toByteArray();
-//    }
-
-    private void uploadToServer(){
+    private void uploadToServer() {
         myDialogFinal = new Dialog(getContext());
         myDialogFinal.setContentView(R.layout.custom_popup_loading);
         TextView text = myDialogFinal.findViewById(R.id.text);
@@ -807,203 +686,205 @@ public class FragmentResult extends Fragment{
         myDialogFinal.setCanceledOnTouchOutside(false);
         myDialogFinal.show();
 
-        if(usertype.equals("admin")){
-            StringRequest stringRequest2 = new StringRequest(Request.Method.POST, SUBMIT_RESULT_STATE,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            if (response.equals("success")){
-                                //convert arrival check to integer
-                                convert = Integer.parseInt(result_submit);
-                                //add 1 to the integer value of arrival check
-                                convert = convert + 1;
-                                //pass the string value to the sharedpreference
-                                SharedPreferences.Editor myEdit2 = preferences.edit();
-                                myEdit2.putString("result_submit", String.valueOf(convert));
-                                myEdit2.commit();
+        StringRequest stringRequest2 = new StringRequest(Request.Method.POST, SUBMIT_RESULT_STATE,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if (response.equals("success")) {
+                            //convert arrival check to integer
+                            convert = Integer.parseInt(result_submit);
+                            //add 1 to the integer value of arrival check
+                            convert = convert + 1;
+                            //pass the string value to the sharedpreference
+                            SharedPreferences.Editor myEdit2 = preferences.edit();
+                            myEdit2.putString("result_submit", String.valueOf(convert));
+                            myEdit2.commit();
 
-                                myDialogFinal.dismiss();
-                                Toast.makeText(getContext(), "Result uploaded successfully", Toast.LENGTH_SHORT).show();
-
-                                myDialogFinish = new Dialog(getContext());
-                                myDialogFinish.setContentView(R.layout.custom_popup_prompt);
-                                ImageView img = myDialogFinish.findViewById(R.id.img);
-                                img.setImageResource(R.drawable.check);
-                                TextView text = myDialogFinish.findViewById(R.id.text);
-                                text.setText("Well done "+got_fullname+"\n\nYou have completed the submission of all checklist for FollowTheResult \n\nAs a state level observer, please check the result verification page for pending LGA result verification");
-                                AppCompatButton proceed = myDialogFinish.findViewById(R.id.proceed);
-                                AppCompatButton close = myDialogFinish.findViewById(R.id.close);
-                                proceed.setText("OK");
-                                close.setVisibility(View.GONE);
-                                proceed.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        Intent i = new Intent(getContext(), Dashboard.class);
-                                        i.putExtra("from", "state_level");
-                                        i.putExtra("state", got_state);
-                                        startActivity(i);
-                                    }
-                                });
-                                myDialogFinish.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                                myDialogFinish.setCanceledOnTouchOutside(false);
-                                myDialogFinish.show();
-
-                            }else{
-                                myDialogFinal.dismiss();
-                                Toast.makeText(getContext(), "Error uploading result. Please try again", Toast.LENGTH_SHORT).show();
-                            }
-
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError volleyError) {
-
-                            if(volleyError == null){
-                                return;
-                            }
                             myDialogFinal.dismiss();
-                            Toast.makeText(getContext(), "A network error occurred. Please try again", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "Result uploaded successfully", Toast.LENGTH_SHORT).show();
+
+                            myDialogFinish = new Dialog(getContext());
+                            myDialogFinish.setContentView(R.layout.custom_popup_prompt);
+                            ImageView img = myDialogFinish.findViewById(R.id.img);
+                            img.setImageResource(R.drawable.check);
+                            TextView text = myDialogFinish.findViewById(R.id.text);
+                            text.setText("Well done " + got_fullname + "\n\nYou have completed the submission of all checklist for FollowTheResult \n\nAs a state level observer, please check the result verification page for pending LGA result verification");
+                            AppCompatButton proceed = myDialogFinish.findViewById(R.id.proceed);
+                            AppCompatButton close = myDialogFinish.findViewById(R.id.close);
+                            proceed.setText("OK");
+                            close.setVisibility(View.GONE);
+                            proceed.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Intent i = new Intent(getContext(), Dashboard.class);
+                                    i.putExtra("from", "state_level");
+                                    i.putExtra("state", got_state);
+                                    startActivity(i);
+                                }
+                            });
+                            myDialogFinish.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                            myDialogFinish.setCanceledOnTouchOutside(false);
+                            myDialogFinish.show();
+
+                        } else {
+                            myDialogFinal.dismiss();
+                            Toast.makeText(getContext(), "Error uploading result. Please try again", Toast.LENGTH_SHORT).show();
                         }
-                    }){
-                @Override
-                protected Map<String, String> getParams(){
-                    Map<String, String> params = new HashMap<>();
-                    params.put("dstate", got_state);
-                    params.put("user", got_email);
-                    params.put("a", input1);
-                    params.put("aa", input2);
-                    params.put("aac", input3);
-                    params.put("adc", input4);
-                    params.put("adp", input5);
-                    params.put("apc", input6);
-                    params.put("apga", input7);
-                    params.put("apm", input8);
-                    params.put("app", input9);
-                    params.put("bp", input10);
-                    params.put("lp", input11);
-                    params.put("nnpp", input12);
-                    params.put("nrm", input13);
-                    params.put("pdp", input14);
-                    params.put("prp", input15);
-                    params.put("sdp", input16);
-                    params.put("ypp", input17);
-                    params.put("zlp", input18);
-                    params.put("myfile", encodedImage);
-                    return params;
-                }
-            };
 
-            RequestQueue requestQueue2 = Volley.newRequestQueue(getContext());
-            DefaultRetryPolicy retryPolicy2 = new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-            stringRequest2.setRetryPolicy(retryPolicy2);
-            requestQueue2.add(stringRequest2);
-            requestQueue2.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
-                @Override
-                public void onRequestFinished(Request<Object> request) {
-                    requestQueue2.getCache().clear();
-                }
-            });
-        }
-        else{
-            StringRequest stringRequest2 = new StringRequest(Request.Method.POST, SUBMIT_RESULT,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            if (response.equals("success")){
-                                //convert arrival check to integer
-                                convert = Integer.parseInt(result_submit);
-                                //add 1 to the integer value of arrival check
-                                convert = convert + 1;
-                                //pass the string value to the sharedpreference
-                                SharedPreferences.Editor myEdit2 = preferences.edit();
-                                myEdit2.putString("result_submit", String.valueOf(convert));
-                                myEdit2.commit();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
 
-                                myDialogFinal.dismiss();
-                                Toast.makeText(getContext(), "Result uploaded successfully", Toast.LENGTH_SHORT).show();
-
-                                myDialogFinish = new Dialog(getContext());
-                                myDialogFinish.setContentView(R.layout.custom_popup_prompt);
-                                ImageView img = myDialogFinish.findViewById(R.id.img);
-                                img.setImageResource(R.drawable.check);
-                                TextView text = myDialogFinish.findViewById(R.id.text);
-                                text.setText("Well done "+got_fullname+"\n\nYou have completed the submission of all checklist for FollowTheResult \n\nWe are glad you worked with us. You can now close the app.");
-                                AppCompatButton proceed = myDialogFinish.findViewById(R.id.proceed);
-                                AppCompatButton close = myDialogFinish.findViewById(R.id.close);
-                                proceed.setText("OK");
-                                close.setVisibility(View.GONE);
-                                proceed.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        Intent i = new Intent(getContext(), Dashboard.class);
-                                        i.putExtra("from", "lga_level");
-                                        i.putExtra("state", got_state);
-                                        startActivity(i);
-                                    }
-                                });
-                                myDialogFinish.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                                myDialogFinish.setCanceledOnTouchOutside(false);
-                                myDialogFinish.show();
-
-
-                            }else{
-                                myDialogFinal.dismiss();
-                                Toast.makeText(getContext(), "Error uploading result. Please try again", Toast.LENGTH_SHORT).show();
-                            }
-
+                        if (volleyError == null) {
+                            return;
                         }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError volleyError) {
+                        myDialogFinal.dismiss();
+                        Toast.makeText(getContext(), "A network error occurred. Please try again", Toast.LENGTH_SHORT).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("dstate", got_state);
+                params.put("user", got_email);
+                params.put("a", input1);
+                params.put("aa", input2);
+                params.put("aac", input3);
+                params.put("adc", input4);
+                params.put("adp", input5);
+                params.put("apc", input6);
+                params.put("apga", input7);
+                params.put("apm", input8);
+                params.put("app", input9);
+                params.put("bp", input10);
+                params.put("lp", input11);
+                params.put("nnpp", input12);
+                params.put("nrm", input13);
+                params.put("pdp", input14);
+                params.put("prp", input15);
+                params.put("sdp", input16);
+                params.put("ypp", input17);
+                params.put("zlp", input18);
+                return params;
+            }
+        };
 
-                            if(volleyError == null){
-                                return;
-                            }
-                            Toast.makeText(getContext(), "A network error occurred. Please try again", Toast.LENGTH_SHORT).show();
-                        }
-                    }){
-                @Override
-                protected Map<String, String> getParams(){
-                    Map<String, String> params = new HashMap<>();
-                    params.put("lga", got_lga);
-                    params.put("dstate", got_state);
-                    params.put("user", got_email);
-                    params.put("a", input1);
-                    params.put("aa", input2);
-                    params.put("aac", input3);
-                    params.put("adc", input4);
-                    params.put("adp", input5);
-                    params.put("apc", input6);
-                    params.put("apga", input7);
-                    params.put("apm", input8);
-                    params.put("app", input9);
-                    params.put("bp", input10);
-                    params.put("lp", input11);
-                    params.put("nnpp", input12);
-                    params.put("nrm", input13);
-                    params.put("pdp", input14);
-                    params.put("prp", input15);
-                    params.put("sdp", input16);
-                    params.put("ypp", input17);
-                    params.put("zlp", input18);
-                    params.put("myfile", encodedImage);
-                    return params;
-                }
-            };
-
-            RequestQueue requestQueue2 = Volley.newRequestQueue(getContext());
-            DefaultRetryPolicy retryPolicy2 = new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-            stringRequest2.setRetryPolicy(retryPolicy2);
-            requestQueue2.add(stringRequest2);
-            requestQueue2.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
-                @Override
-                public void onRequestFinished(Request<Object> request) {
-                    requestQueue2.getCache().clear();
-                }
-            });
-        }
-
+        RequestQueue requestQueue2 = Volley.newRequestQueue(getContext());
+        DefaultRetryPolicy retryPolicy2 = new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        stringRequest2.setRetryPolicy(retryPolicy2);
+        requestQueue2.add(stringRequest2);
+        requestQueue2.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
+            @Override
+            public void onRequestFinished(Request<Object> request) {
+                requestQueue2.getCache().clear();
+            }
+        });
+//
+////        if(usertype.equals("admin")){
+////
+////        }
+////        else{
+////            StringRequest stringRequest2 = new StringRequest(Request.Method.POST, SUBMIT_RESULT,
+////                    new Response.Listener<String>() {
+////                        @Override
+////                        public void onResponse(String response) {
+////                            if (response.equals("success")){
+////                                //convert arrival check to integer
+////                                convert = Integer.parseInt(result_submit);
+////                                //add 1 to the integer value of arrival check
+////                                convert = convert + 1;
+////                                //pass the string value to the sharedpreference
+////                                SharedPreferences.Editor myEdit2 = preferences.edit();
+////                                myEdit2.putString("result_submit", String.valueOf(convert));
+////                                myEdit2.commit();
+////
+////                                myDialogFinal.dismiss();
+////                                Toast.makeText(getContext(), "Result uploaded successfully", Toast.LENGTH_SHORT).show();
+////
+////                                myDialogFinish = new Dialog(getContext());
+////                                myDialogFinish.setContentView(R.layout.custom_popup_prompt);
+////                                ImageView img = myDialogFinish.findViewById(R.id.img);
+////                                img.setImageResource(R.drawable.check);
+////                                TextView text = myDialogFinish.findViewById(R.id.text);
+////                                text.setText("Well done "+got_fullname+"\n\nYou have completed the submission of all checklist for FollowTheResult \n\nWe are glad you worked with us. You can now close the app.");
+////                                AppCompatButton proceed = myDialogFinish.findViewById(R.id.proceed);
+////                                AppCompatButton close = myDialogFinish.findViewById(R.id.close);
+////                                proceed.setText("OK");
+////                                close.setVisibility(View.GONE);
+////                                proceed.setOnClickListener(new View.OnClickListener() {
+////                                    @Override
+////                                    public void onClick(View view) {
+////                                        Intent i = new Intent(getContext(), Dashboard.class);
+////                                        i.putExtra("from", "lga_level");
+////                                        i.putExtra("state", got_state);
+////                                        startActivity(i);
+////                                    }
+////                                });
+////                                myDialogFinish.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+////                                myDialogFinish.setCanceledOnTouchOutside(false);
+////                                myDialogFinish.show();
+////
+////
+////                            }else{
+////                                myDialogFinal.dismiss();
+////                                Toast.makeText(getContext(), "Error uploading result. Please try again", Toast.LENGTH_SHORT).show();
+////                            }
+////
+////                        }
+////                    },
+////                    new Response.ErrorListener() {
+////                        @Override
+////                        public void onErrorResponse(VolleyError volleyError) {
+////
+////                            if(volleyError == null){
+////                                return;
+////                            }
+////                            Toast.makeText(getContext(), "A network error occurred. Please try again", Toast.LENGTH_SHORT).show();
+////                        }
+////                    }){
+////                @Override
+////                protected Map<String, String> getParams(){
+////                    Map<String, String> params = new HashMap<>();
+////                    params.put("lga", got_lga);
+////                    params.put("dstate", got_state);
+////                    params.put("user", got_email);
+////                    params.put("a", input1);
+////                    params.put("aa", input2);
+////                    params.put("aac", input3);
+////                    params.put("adc", input4);
+////                    params.put("adp", input5);
+////                    params.put("apc", input6);
+////                    params.put("apga", input7);
+////                    params.put("apm", input8);
+////                    params.put("app", input9);
+////                    params.put("bp", input10);
+////                    params.put("lp", input11);
+////                    params.put("nnpp", input12);
+////                    params.put("nrm", input13);
+////                    params.put("pdp", input14);
+////                    params.put("prp", input15);
+////                    params.put("sdp", input16);
+////                    params.put("ypp", input17);
+////                    params.put("zlp", input18);
+////                    params.put("myfile", encodedImage);
+////                    return params;
+////                }
+////            };
+////
+////            RequestQueue requestQueue2 = Volley.newRequestQueue(getContext());
+////            DefaultRetryPolicy retryPolicy2 = new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+////            stringRequest2.setRetryPolicy(retryPolicy2);
+////            requestQueue2.add(stringRequest2);
+////            requestQueue2.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
+////                @Override
+////                public void onRequestFinished(Request<Object> request) {
+////                    requestQueue2.getCache().clear();
+////                }
+////            });
+////        }
+//
+//    }
     }
 }

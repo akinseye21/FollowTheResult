@@ -36,30 +36,32 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/btn"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:layout_marginTop="375dp"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="375dp"
         android:background="@drawable/normal_yellow_corner"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingLeft="20dp"
+        android:paddingTop="10dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="10dp">
+
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@drawable/ic20"/>
+            android:src="@drawable/ic20" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/montserratbold"
+            android:paddingLeft="10dp"
             android:text="Use camera"
             android:textColor="@color/white"
-            android:textSize="18dp"
-            android:fontFamily="@font/montserratbold"
-            android:layout_gravity="center"
-            android:paddingLeft="10dp"/>
+            android:textSize="18dp" />
     </LinearLayout>
 
     <ScrollView

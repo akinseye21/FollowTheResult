@@ -70,115 +70,117 @@ FragmentUserProfile.OnFragmentInteractionListener{
 
         tabLayout = findViewById(R.id.tabLayout);
 
+        addTabs(viewPager);
+        tabLayout.setupWithViewPager(viewPager);
+        setupTabIcons();
 
-        if (usertype.equals("lga_level")){
+        tabLayout.setOnTabSelectedListener(
+                new TabLayout.ViewPagerOnTabSelectedListener(viewPager) {
 
-            addTabs(viewPager);
-            tabLayout.setupWithViewPager(viewPager);
-            setupTabIcons();
-
-            tabLayout.setOnTabSelectedListener(
-                    new TabLayout.ViewPagerOnTabSelectedListener(viewPager) {
-
-                        @Override
-                        public void onTabSelected(TabLayout.Tab tab) {
-                            if (tab.getPosition() == 0){
-                                pageTitle.setText("HOME");
-                            }
-                            else if(tab.getPosition() == 1){
-                                pageTitle.setText("CHECKLISTS");
-                            }
-                            else if(tab.getPosition() == 2){
-                                pageTitle.setText("CONTACT CENTRE");
-                            }
-                            else if(tab.getPosition() == 3){
-                                pageTitle.setText("USER PROFILE");
-                            }
-                            else if(tab.getPosition() == 4){
-                                pageTitle.setText("INCIDENCE CHECKLIST");
-                            }
+                    @Override
+                    public void onTabSelected(TabLayout.Tab tab) {
+                        if (tab.getPosition() == 0){
+                            pageTitle.setText("HOME");
                         }
-
-                        @Override
-                        public void onTabReselected(TabLayout.Tab tab) {
-//                        super.onTabReselected(tab);
-                            if(tab.getPosition() == 0){
-                                pageTitle.setText("HOME");
-                            }
-                            else if(tab.getPosition() == 1){
-                                pageTitle.setText("CHECKLISTS");
-                            }
-                            else if(tab.getPosition() == 2){
-                                pageTitle.setText("CONTACT CENTRE");
-                            }
-                            else if(tab.getPosition() == 3){
-                                pageTitle.setText("USER PROFILE");
-                            }
-                            else if(tab.getPosition() == 4){
-                                pageTitle.setText("INCIDENCE CHECKLIST");
-                            }
+                        else if(tab.getPosition() == 1){
+                            pageTitle.setText("CHECKLISTS");
+                        }
+                        else if(tab.getPosition() == 2){
+                            pageTitle.setText("CONTACT CENTRE");
+                        }
+                        else if(tab.getPosition() == 3){
+                            pageTitle.setText("USER PROFILE");
+                        }
+                        else if(tab.getPosition() == 4){
+                            pageTitle.setText("INCIDENCE CHECKLIST");
                         }
                     }
-            );
-        }
 
-        if(usertype.equals("state_level")){
-
-
-            addTabs_state(viewPager);
-            tabLayout.setupWithViewPager(viewPager);
-            setupTabIcons_state();
-
-            tabLayout.setOnTabSelectedListener(
-                    new TabLayout.ViewPagerOnTabSelectedListener(viewPager) {
-
-                        @Override
-                        public void onTabSelected(TabLayout.Tab tab) {
-                            if (tab.getPosition() == 0){
-                                pageTitle.setText("HOME");
-                            }
-                            else if(tab.getPosition() == 1){
-                                pageTitle.setText("CHECKLISTS");
-                            }
-                            else if(tab.getPosition() == 2){
-                                pageTitle.setText("CONTACT CENTRE");
-                            }
-                            else if(tab.getPosition() == 3){
-                                pageTitle.setText("RESULT VERIFICATION");
-                            }
-                            else if(tab.getPosition() == 4){
-                                pageTitle.setText("USER PROFILE");
-                            }
-                            else if(tab.getPosition() == 5){
-                                pageTitle.setText("INCIDENCE CHECKLIST");
-                            }
-                        }
-
-                        @Override
-                        public void onTabReselected(TabLayout.Tab tab) {
+                    @Override
+                    public void onTabReselected(TabLayout.Tab tab) {
 //                        super.onTabReselected(tab);
-                            if(tab.getPosition() == 0){
-                                pageTitle.setText("HOME");
-                            }
-                            else if(tab.getPosition() == 1){
-                                pageTitle.setText("CHECKLISTS");
-                            }
-                            else if(tab.getPosition() == 2){
-                                pageTitle.setText("CONTACT CENTRE");
-                            }
-                            else if(tab.getPosition() == 3){
-                                pageTitle.setText("RESULT VERIFICATION");
-                            }
-                            else if(tab.getPosition() == 4){
-                                pageTitle.setText("USER PROFILE");
-                            }
-                            else if(tab.getPosition() == 5){
-                                pageTitle.setText("INCIDENCE CHECKLIST");
-                            }
+                        if(tab.getPosition() == 0){
+                            pageTitle.setText("HOME");
+                        }
+                        else if(tab.getPosition() == 1){
+                            pageTitle.setText("CHECKLISTS");
+                        }
+                        else if(tab.getPosition() == 2){
+                            pageTitle.setText("CONTACT CENTRE");
+                        }
+                        else if(tab.getPosition() == 3){
+                            pageTitle.setText("USER PROFILE");
+                        }
+                        else if(tab.getPosition() == 4){
+                            pageTitle.setText("INCIDENCE CHECKLIST");
                         }
                     }
-            );
-        }
+                }
+        );
+
+
+//        if (usertype.equals("lga_level")){
+//
+//
+//        }
+
+//        if(usertype.equals("state_level")){
+//
+//
+//            addTabs_state(viewPager);
+//            tabLayout.setupWithViewPager(viewPager);
+//            setupTabIcons_state();
+//
+//            tabLayout.setOnTabSelectedListener(
+//                    new TabLayout.ViewPagerOnTabSelectedListener(viewPager) {
+//
+//                        @Override
+//                        public void onTabSelected(TabLayout.Tab tab) {
+//                            if (tab.getPosition() == 0){
+//                                pageTitle.setText("HOME");
+//                            }
+//                            else if(tab.getPosition() == 1){
+//                                pageTitle.setText("CHECKLISTS");
+//                            }
+//                            else if(tab.getPosition() == 2){
+//                                pageTitle.setText("CONTACT CENTRE");
+//                            }
+//                            else if(tab.getPosition() == 3){
+//                                pageTitle.setText("RESULT VERIFICATION");
+//                            }
+//                            else if(tab.getPosition() == 4){
+//                                pageTitle.setText("USER PROFILE");
+//                            }
+//                            else if(tab.getPosition() == 5){
+//                                pageTitle.setText("INCIDENCE CHECKLIST");
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onTabReselected(TabLayout.Tab tab) {
+////                        super.onTabReselected(tab);
+//                            if(tab.getPosition() == 0){
+//                                pageTitle.setText("HOME");
+//                            }
+//                            else if(tab.getPosition() == 1){
+//                                pageTitle.setText("CHECKLISTS");
+//                            }
+//                            else if(tab.getPosition() == 2){
+//                                pageTitle.setText("CONTACT CENTRE");
+//                            }
+//                            else if(tab.getPosition() == 3){
+//                                pageTitle.setText("RESULT VERIFICATION");
+//                            }
+//                            else if(tab.getPosition() == 4){
+//                                pageTitle.setText("USER PROFILE");
+//                            }
+//                            else if(tab.getPosition() == 5){
+//                                pageTitle.setText("INCIDENCE CHECKLIST");
+//                            }
+//                        }
+//                    }
+//            );
+//        }
 
     }
 
@@ -190,14 +192,14 @@ FragmentUserProfile.OnFragmentInteractionListener{
         tabLayout.getTabAt(4).setIcon(R.drawable.forbidden);
     }
 
-    private void setupTabIcons_state() {
-        tabLayout.getTabAt(0).setIcon(R.drawable.ic15);
-        tabLayout.getTabAt(1).setIcon(R.drawable.ic16);
-        tabLayout.getTabAt(2).setIcon(R.drawable.ic17);
-        tabLayout.getTabAt(3).setIcon(R.drawable.ic22);
-        tabLayout.getTabAt(4).setIcon(R.drawable.ic18);
-        tabLayout.getTabAt(5).setIcon(R.drawable.forbidden);
-    }
+//    private void setupTabIcons_state() {
+//        tabLayout.getTabAt(0).setIcon(R.drawable.ic15);
+//        tabLayout.getTabAt(1).setIcon(R.drawable.ic16);
+//        tabLayout.getTabAt(2).setIcon(R.drawable.ic17);
+//        tabLayout.getTabAt(3).setIcon(R.drawable.ic22);
+//        tabLayout.getTabAt(4).setIcon(R.drawable.ic18);
+//        tabLayout.getTabAt(5).setIcon(R.drawable.forbidden);
+//    }
 
     private void addTabs(ViewPager viewPager) {
         Dashboard.ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
